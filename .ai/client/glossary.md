@@ -5,8 +5,8 @@
 > If two people use the same word to mean different things, THAT is the most important
 > entry to write down — domain ambiguity is where AI-generated code goes plausibly wrong.
 >
-> This file may also be worth handing to the client at the end (see `docs/handoff.md`) —
-> it's good project hygiene, not just an AI aid. Keep it clean.
+> This ships to the client and is the single file most likely to save the next developer
+> who touches this code — it's good project hygiene, not just an AI aid. Keep it current.
 
 ## [Term]
 **Definition:**

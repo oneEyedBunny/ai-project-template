@@ -2,7 +2,7 @@
 
 > FILL THIS IN as the design takes shape. This is the map: the major pieces, how they
 > talk, and where things live. Keep it high-level — details live in code and specs.
-> A cleaned version of this may be worth handing to the client (see `docs/handoff.md`).
+> This ships to the client, so write it for them as well as for us.
 
 ## System overview
 

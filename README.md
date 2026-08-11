@@ -12,7 +12,7 @@ persona and stop-list, the client context and domain glossary, our engineering
 standards, our patterns, the handoff process. No general-purpose tool can supply
 these, because they're ours. We lean on our own `specs/` folder and glossary for the spec-driven-development (SDD).
 
-** [agent-skills](https://github.com/addyosmani/agent-skills) owns
+**[agent-skills](https://github.com/addyosmani/agent-skills) owns
 execution workflow — the HOW.** It's a pack of production-grade engineering
 workflows the AI follows step by step. We use a focused subset of it (not the
 whole pack) to cover the build/verify/ship middle that this template
@@ -35,7 +35,7 @@ template already provides; the rest can be added later if a project needs them.
 
 ## Quick start for a new client
 
-1. Use this template (or clone it) into a new **private** repo.
+1. [Use this template (or clone it) into a new **private** repo.](#getting-this-into-github)
 2. Fill in the client-specific files (the ones with fill-in prompts):
    - `.ai/client/context.md`, `.ai/client/glossary.md`, `.ai/client/constraints.md`
    - `.ai/engineering/stack.md`
@@ -45,18 +45,20 @@ template already provides; the rest can be added later if a project needs them.
 4. Install the agent-skills we use for build/verify/ship (pulled from
    [agent-skills](https://github.com/addyosmani/agent-skills), not stored in this repo).
    Run once per machine or project:
-```bash
+
+   ```bash
    npx skills add addyosmani/agent-skills --skill incremental-implementation
    npx skills add addyosmani/agent-skills --skill test-driven-development
    npx skills add addyosmani/agent-skills --skill debugging-and-error-recovery
    npx skills add addyosmani/agent-skills --skill git-workflow-and-versioning
-```
+   ```
+
    See "How this template works with agent-skills" for which skill covers which phase.
+
 5. Once the stack is chosen, ask Claude to generate the matching config: linter,
    formatter, pre-commit hooks, and CI. (Deliberately left out until the stack exists —
    those files can't be generic.)
 6. Enable branch protection and mark this as a template repo (see below).
-
 
 
 ## What's here
@@ -85,9 +87,7 @@ docs/
   decisions-log.md         Running record of mid-build choices
   open-questions.md        Blocked-on-a-human decisions (the translation queue)
   todo.md                  Work queue + STANDING handoff checklist
-  handoff.md               The two-repo client handoff process
-scripts/
-  sync-to-delivery.sh      Allowlist copy of deliverable files to the client repo
+  handoff.md               How the client takes ownership (access, operability)
 src/                       Application code
 .gitignore                 Scoped to secrets + build artifacts (NOT the .ai/ files)
 .env.example               Documents env vars without committing secrets
@@ -103,25 +103,17 @@ without disturbing the settled ones:
 - **Living state**: decisions log, open questions, todo — updated every session.
 - **Enforcement**: gitignore now; linter/formatter/CI once the stack is chosen.
 
-## Guardrails (especially for teammates new to AI coding)
-
-Two kinds, and the automated ones matter most because they can't be forgotten:
-
-- **Automated** (enforce themselves): formatter, linter, type-checker on pre-commit;
-  tests + checks in CI; branch protection so nothing lands on `main` without a reviewed
-  pull request. These get generated once the stack is set.
-- **Written** (judgment that can't be automated): the stop-list in `CLAUDE.md`, the
-  "you must understand what you commit" rule, and `how-we-work-with-ai.md`. Each rule
-  has a *why* — people follow rules they understand and route around ones they don't.
-
 ## Client handoff
 
-Internal working files never reach the client. This is handled by a **two-repo model**,
-not by deleting files at the end: a private working repo (everything) and a delivery repo
-in the client's GitHub org (only `src/`, a README, and cleaned keeper docs). Code flows to
-the clean side at every milestone via `scripts/sync-to-delivery.sh`, so handoff is a
-verification, not a scramble. Full process in `docs/handoff.md`; the checklist that can't
-be skipped is standing at the bottom of `docs/todo.md`.
+**One repo, everything ships.** We build with AI and we say so — the `.ai/` context files
+are part of the deliverable, not something to scrub before handover. They're how the next
+maintainer picks the codebase up without re-deriving every decision.
+
+That makes the risk **abandonment**, not exposure: a client who owns a repo they can't
+actually run. So handoff is about access and operability — README that works, env vars
+documented, accounts and secrets transferred, branch protection on. Reasoning in
+`docs/handoff.md`; the checklist that can't be skipped is standing at the bottom of
+`docs/todo.md`.
 
 ## GitHub settings (not files — do these by hand)
 

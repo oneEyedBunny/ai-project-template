@@ -6,7 +6,7 @@ here (those live in `open-questions.md`).
 > Recommendation: once the team is comfortable, move this to GitHub Issues. Issues are
 > shared, link to pull requests, and fit the branch-per-task workflow better than a file.
 > Keep this file only as a simple starting point, OR keep it just for the standing
-> handoff items below, which don't map cleanly to a feature issue.
+> handoff checklist below, which doesn't map cleanly to a feature issue.
 
 ## In progress
 
@@ -16,28 +16,30 @@ here (those live in `open-questions.md`).
 
 ---
 
-## STANDING: sync to delivery repo (do at every milestone — don't let it pile up)
-
-The client-facing delivery repo should stay current so final handoff is a check, not a
-scramble. At each finished, reviewed feature:
-
-- [ ] Run `scripts/sync-to-delivery.sh` (copies only allowlisted paths)
-- [ ] Confirm no `.ai/` or internal working files landed in the delivery repo
-- [ ] Commit in the delivery repo with a clean, plain message
-
 ## STANDING: final client handoff checklist (DO NOT SKIP)
 
-This is the one step whose failure mode is "the client sees everything." It lives here
-permanently so it can't be forgotten. Work through every box before handing over.
+The failure mode this guards against is **abandonment** — the client owns a repo they
+can't actually operate. It lives here permanently so it can't be forgotten. Work through
+every box before handing over. See `docs/handoff.md` for the reasoning.
 
-- [ ] Final `scripts/sync-to-delivery.sh` run completed
-- [ ] Delivery repo contains ONLY: `src/`, README, and the keeper docs
-      (glossary, cleaned architecture notes / ADRs) — see `docs/handoff.md`
-- [ ] Delivery repo has NO `.ai/persona.md`, operating-rules, review-checklist,
-      decisions-log, open-questions, or todo
-- [ ] Delivery repo git history is clean (fresh history — no commits exposing internal
-      working files; see `docs/handoff.md`)
-- [ ] Keeper docs read as normal professional documentation (no AI framing)
-- [ ] Client README written: what the app is, how to run it, how to deploy
-- [ ] Access to the delivery repo (in the client's GitHub org) confirmed working
-- [ ] Branch protection enabled on the delivery repo's `main`
+**Can they run it?**
+- [ ] README covers: what the app is, how to run it locally, how to deploy it
+- [ ] A person who has never seen the project followed the README start to finish and
+      got it running — actually tested, not assumed
+- [ ] `.env.example` lists every env var the app reads, with a note on where real
+      values come from
+
+**Do they own it?**
+- [ ] Repo ownership transferred to the client's GitHub org (or their account)
+- [ ] Their team's access confirmed working — someone on their side has pushed or
+      opened a PR successfully
+- [ ] Branch protection enabled on `main`
+- [ ] Any third-party accounts we set up (hosting, DB, APIs, domains) are in their
+      name or transferred, and billing points at them
+
+**Can they maintain it?**
+- [ ] Secrets rotated off anything tied to us; the client holds the current values
+- [ ] `docs/decisions-log.md` and the ADRs explain the non-obvious choices
+- [ ] `.ai/client/glossary.md` is current — it's the file that saves the next dev
+- [ ] Open items are written down in `docs/open-questions.md`, not left verbal
+- [ ] They know we built with AI, what `.ai/` is for, and how to keep using it

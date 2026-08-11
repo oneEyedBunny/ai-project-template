@@ -54,7 +54,10 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Claude Code: shared permissions are committed (.claude/settings.json); personal
+# per-machine overrides are not.
+.claude/settings.local.json
+
 # NOTE: The .ai/ context files, docs/, and specs/ are intentionally NOT ignored.
-# They are the shared source of truth — teammates and Claude must get them on clone.
-# Keeping internal files out of the CLIENT's copy is handled separately, by the
-# two-repo handoff (see docs/handoff.md), NOT by gitignore.
+# They are the shared source of truth — teammates, the client, and Claude must all get
+# them on clone. They ship with the project (see docs/handoff.md).
