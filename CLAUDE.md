@@ -24,6 +24,17 @@ When something is blocked on a human decision, add it to `docs/open-questions.md
 
 ---
 
+## Build / verify / ship workflow
+
+For execution, use the installed agent-skills (see README for install):
+- Building a feature → `incremental-implementation` + `test-driven-development`
+- Something breaks → `debugging-and-error-recovery`
+- Committing / PRs → `git-workflow-and-versioning`
+
+These sequence the work; the standards and stop-list above still bind.
+
+---
+
 ## The stop-list — never do these without explicit human sign-off
 
 These are absolute. If a task requires one of these, STOP and ask first.
