@@ -1,61 +1,50 @@
 # Handoff process
 
-How code reaches the client without exposing our internal working files or the extent of
-AI-assisted development. Decide the boundary up front (now); flow code to the clean side
-continuously, so final handoff is a verification — not a last-minute scramble.
+How the project reaches the client as something they can own, run, and keep building on
+after we're gone. The work happens in one repo — the client's — and everything in it
+ships. Nothing is staged, filtered, or scrubbed at the end.
 
-## The two-repo model
+We build with AI and we say so. The `.ai/` context files are part of the deliverable:
+they're how a future maintainer (human or AI) picks this codebase up without re-deriving
+every decision.
 
-**This (private) working repo** — everything: `src/`, the full `.ai/` scaffolding,
-decisions log, open questions, todos. The team works here. Claude codes here.
+## The bar
 
-**Delivery repo — lives in the client's GitHub organization** — only what they receive:
-`src/`, a real README, and the *keeper docs* (see below). Separate repo, separate
-history, separate access. The client's org only ever sees the clean one.
+Handoff is done when someone who has never seen this project can clone it, run it, deploy
+it, and make a change — without asking us anything.
 
-Why two repos rather than a `handoff` branch: branches share history (past commits still
-expose `.ai/`), and selective merges are fiddly and easy to get wrong — a real footgun
-for a team still building git instincts. Separate repos give a clean history for free.
+That means the failure mode to guard against isn't exposure, it's **abandonment**: a repo
+they technically own but can't operate. Every item below exists to close that gap.
 
-## What ships vs what stays
+## What ships
 
-We use an **allowlist** — name what ships; anything not named stays out by default, which
-is the safe direction to fail. The allowlist lives in `scripts/sync-to-delivery.sh`.
+Everything in the repo. `src/`, the specs, the decisions log, the ADRs, the glossary, the
+`.ai/` context. The only judgment call is whether *our reusable methodology* files
+(`persona.md`, `standards.md`, `patterns.md`) are this client's deliverable or our own
+tooling that happens to live here — decide that per engagement, up front, and write the
+answer in `.ai/client/constraints.md`.
 
-**Ships (keeper docs — genuine project-hygiene assets, cleaned of AI framing):**
-- `src/` — the code
-- `README.md` — client-facing: what it is, how to run and deploy
-- `.ai/client/glossary.md` — the domain glossary (rename/relocate as plain docs)
-- Cleaned `architecture.md` and `adr/` — the *what* and *why* of the design
+Since everything ships, write it delivery-ready the first time. There is no cleanup pass.
 
-**Stays (internal only — never ships):**
-- `.ai/persona.md`, `.ai/operating-rules.md`
-- `.ai/workflow/` (review checklist, definition of done)
-- `.ai/engineering/how-we-work-with-ai.md`, `standards.md`, `patterns.md`
-- `docs/decisions-log.md`, `docs/open-questions.md`, `docs/todo.md`, this file
+## Do these continuously, not at the end
 
-> Decide keeper docs file-by-file per project. Good documentation is an asset worth
-> delivering; the AI-process files are not. Since keeper docs ship, author them
-> delivery-ready from the start so there's nothing to clean under deadline.
+The whole point of building in the client's repo is that handoff stops being an event.
+Keep these current as you go:
 
-## Clean history
+- `README.md` — what it is, how to run it, how to deploy it. Update it when those change.
+- `.env.example` — every env var the app reads, documented, no real values.
+- `docs/decisions-log.md` — the *why* behind non-obvious choices, written when you make
+  them, not reconstructed later.
 
-The delivery repo starts from its own fresh initial commit — don't clone or branch from
-the working repo. That way the client's `git log` begins at "initial commit" and never
-contains a commit that added the internal files. The sync script copies *current state*
-into the delivery repo; it does not carry our history across.
+## Final handoff
 
-## Step by step (each milestone, and finally)
-
-1. Finish and review a feature in this repo.
-2. Run `scripts/sync-to-delivery.sh /path/to/delivery-repo`.
-3. In the delivery repo, review the diff, then commit with a clean plain message.
-4. At final handoff, work the checklist in `docs/todo.md` — every box.
+Work the checklist at the bottom of `docs/todo.md`. It's short, and it's mostly about
+access and operability — the things that are invisible until they're missing.
 
 ## The GitHub settings that aren't files
 
-- **Branch protection** on `main` (both repos): Settings → Branches → add a rule for
-  `main` → require a pull request before merging. This enforces "nothing pushed straight
-  to main," which written rules alone can't guarantee.
-- **Template repository** (this repo): Settings → check "Template repository" so each new
-  client is one click via "Use this template."
+- **Branch protection** on `main`: Settings → Branches → require a pull request before
+  merging. This enforces "nothing pushed straight to main," which written rules alone
+  can't guarantee.
+- **Template repository** (this template repo only, not client projects): Settings →
+  check "Template repository" so each new client is one click via "Use this template."
