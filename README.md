@@ -122,7 +122,9 @@ documented, accounts and secrets transferred, branch protection on. Reasoning in
 
 ## GitHub settings (not files — do these by hand)
 
-- **Branch protection** on `master`: Settings → Branches → require a pull request to merge.
+- **Protect `master`**: require a pull request to merge. Settings → Rules → Rulesets, or
+  Settings → Branches on a repo using older branch protection — see `docs/handoff.md`,
+  which explains how to tell which one your repo uses.
 - **Require the "Decision records are append-only" check** on that same rule. The workflow
   is a file and ships automatically; marking it *required* is the manual part, and it only
   appears in the picker after it has run once. Full sequence in `docs/handoff.md`.
