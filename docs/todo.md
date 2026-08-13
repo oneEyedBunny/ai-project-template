@@ -56,3 +56,11 @@ every box before handing over. See `docs/handoff.md` for the reasoning.
 - [ ] `.ai/client/glossary.md` is current — it's the file that saves the next dev
 - [ ] Open items are written down in `docs/open-questions.md`, not left verbal
 - [ ] They know we built with AI, what `.ai/` is for, and how to keep using it
+- [ ] Structural boundary contract in `.ai/engineering/architecture.md` is resolved:
+      either declared, or recorded as a deliberate "no boundaries worth contracting."
+      This is the deadline for it — see the status marker in that file.
+- [ ] The as-built check is **answered in writing**, including when the answer is
+      "no divergence." Leave it blank and it's indistinguishable from clean. Where the
+      code disagrees with the declared contract, say where — that gap is the one thing a
+      successor cannot reconstruct from the code, and it's the item most likely to get
+      dropped under delivery pressure because writing it down reads as admitting mess.

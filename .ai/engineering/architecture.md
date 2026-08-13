@@ -60,11 +60,12 @@ Pick one when the time comes, delete the others:
 - **Blended**: one of the above *plus* the seam in part 1, which outranks it.
 
 > **Status: NOT YET DECLARED — due at the first ADR that changes a module boundary, a
-> dependency direction, or a public interface.**
+> dependency direction, or a public interface, or at handoff, whichever comes first.**
 >
-> This marker is load-bearing and stays until it stops being true. An absent or empty
-> section reads as "there is no contract"; this has to read as "not yet, and here is
-> when." An agent treats those two identically otherwise, and picks its own structure.
+> This marker is load-bearing and stays until it stops being true. An absent section
+> reads as "there is no contract," and a bare placeholder reads as forgotten. This has to
+> read as *parked, with a date it comes due* — an agent, and a successor, treat the three
+> identically otherwise and pick their own structure.
 
 **Why this half waits.** You cannot name module boundaries before there are modules, and
 a contract invented from a template default doesn't get followed, it gets *built*: an
@@ -77,6 +78,29 @@ changes a module boundary, a dependency direction, or a public interface — and
 criterion cannot be applied by someone who doesn't know what the boundaries are. So the
 first ADR that trips it is the moment this section gets filled in. Writing the contract is
 part of that ADR, not a follow-up.
+
+**Two triggers, and they produce different artifacts.** The ADR trigger fires at the
+decision moment. Handoff is the backstop for the case where it never fired at all —
+because the criterion above is not self-firing, and the person establishing a boundary by
+accident is the one least likely to notice they've done it. Both are needed, and what each
+one writes is not the same thing:
+
+- **At the ADR, the contract is a constraint.** The build is in progress; its job is to
+  rule things out.
+- **At handoff, the contract is a description.** The structure is already set. Writing it
+  as a constraint hands the successor a picture of the architecture you wish you'd built,
+  which is worse than nothing — they'll trust it. Write what is actually true.
+
+**If a contract already exists at handoff, do not rewrite it — annotate it.** Leave the
+declared contract exactly as written and add a dated block underneath, e.g.
+`**As-built check, 2026-11-02:** no divergence.` or `**As-built check, 2026-11-02:**
+features/billing imports features/scheduling directly, which the contract above forbids.
+Known, not fixed — see decisions-log.`
+
+Same shape as the supersession convention in `docs/decisions-log.md`: never edit the
+original, add a marked line. Replacing the contract destroys the evidence that the code
+drifted, which is exactly what a successor needs. Keeping two contracts side by side
+leaves them unable to tell which one governs.
 
 Name the tool that enforces whichever shape you pick in the `stack.md` enforcement table.
 Prose alone does not stop an import.
