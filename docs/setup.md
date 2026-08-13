@@ -45,6 +45,10 @@ Do these in order — steps 2 and 3 depend on each other.
    `--force` updates the label instead of erroring if it already exists, so re-running
    setup on a partly configured repo doesn't halt here. By hand: Issues → Labels.
 
+   It has to be the **label** on the pull request — `gh pr edit <n> --add-label
+   amend-decision`, or the Labels box in the sidebar. Putting `amend-decision` in the PR
+   *title* looks right and does nothing; the workflow reads the label list.
+
    **The label is a mark, not a gate.** It records that an edit was deliberate and makes
    it visible on the pull request — it does not require anyone to approve. Note that
    requiring a *pull request* (step 1) is not the same as requiring an *approving review*,
