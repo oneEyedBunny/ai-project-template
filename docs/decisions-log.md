@@ -39,6 +39,55 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — Stop-list gains money and sync conflicts; dependency gate stays put
+**Decision:** Both policy questions left open by the adversarial review are now settled.
+
+**Money movement and sync-conflict resolution join the stop-list.** Seven items now. Both
+pass the shape test in `persona.md` — the cost of being wrong lands outside the pull
+request and is expensive to walk back. A wrong charge debits a real person; a wrong merge
+rule destroys data with nothing to restore from.
+
+**"Data integrity" is rejected as an item.** It is a category, not a change type. Almost
+any bug is a data-integrity bug at some altitude, so as a list entry it fires constantly —
+the exact failure that got new dependencies removed. Where it is concrete it is already
+covered: migrations, and now conflict resolution.
+
+**Why the fatigue objection doesn't apply here, since it killed a previous addition.**
+"Add a dependency" failed because adding packages is routine work, so the stop fired on
+ordinary activity and taught people to route around the list. Payment logic is written
+once and rarely revisited. Sync is scoped deliberately to *merge semantics* — what wins on
+collision, what happens to the loser — not to feature work that happens to sync. Scoped
+that way both fire almost never, and at the one moment that matters. The lesson from the
+dependency case is about *frequency of firing*, not about list length.
+
+**The dependency gate stays where it is; the rubric was the thing at fault.** The review
+argued that adding a new package should return to the stop-list because a manifest diff
+does not expose the transitive tree. The premise is right — technically the tree is in the
+lockfile, but nobody reads a lockfile diff, so the earlier entry's "reviewed at the PR via
+the manifest diff" claimed more than it delivered. The conclusion does not follow: that is
+a gap in *what the rubric measures*, not in *where the gate sits*. The five criteria in
+`stack.md` all covered project health and none asked what a package drags in. A sixth
+criterion now does. Moving the gate would have reintroduced the fatigue problem to solve a
+problem the rubric can solve in place.
+
+**Superseded in part, 2026-08-13** — this resolves the two questions the
+"Adversarial review: dispositions" entry below left open. Its other dispositions stand.
+
+**Also fixed: a broken reference in that entry.** It stated both questions were recorded
+in `docs/open-questions.md`; only one was. Caught while working these, and worth noting as
+the same defect class the review was hunting — a document describing repo state that was
+not true of the repo.
+
+**Note on the co-change case.** This is the first stop-list edit since the two-copy
+arrangement was set up, so it is the first live exercise of the co-change design recorded
+below. Both copies were updated in one commit, and a third file —
+`.ai/workflow/definition-of-done.md` — also needed updating, because a fix from earlier
+today named payments and sync as *not* on the stop-list. That third file is outside what
+the designed co-change check would have covered. Worth knowing before that check gets
+built: two files was the wrong count.
+
+---
+
 ## 2026-08-13 — Adversarial review: dispositions
 **Decision:** An external adversarial review of this repo returned six findings. Four
 fixed, one recorded as an open question, one rejected. Two further defects it missed were
