@@ -39,6 +39,57 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — Standards are stack-agnostic; boundary contract splits by kind
+**Decision:** Three layers. `standards.md` holds the invariant and an example.
+`stack.md` holds which tool enforces it and where that tool is configured. The config file
+holds the number. `standards.md` keeps *indicative* numbers, explicitly marked as not the
+enforced value.
+
+The boundary contract splits in two, declared at different times:
+
+- **The client/server seam is declared at init.** You know at repo creation whether there
+  is a server side, and its violation ships a secret in a bundle — a security failure, not
+  a design smell. It also gets a one-line reminder in `CLAUDE.md`'s non-negotiables.
+- **The structural shape (layered, or feature/shared/ui) is deferred**, with the first ADR
+  that trips the T6 criterion as the trigger, and a visible NOT YET DECLARED marker until
+  then.
+
+**Why:** The three-layer split assumed all three layers exist. On a new project none of
+them do except prose, and that window — before stack selection — is exactly when the first
+feature gets written. Hence indicative numbers: an agent given "split when it smells" has
+nothing to calibrate against and will write a 90-line function. They are marked
+non-enforced so the first project doesn't set its linter to 30 by default rather than by
+choice.
+
+On the boundary halves: declaring structure early is worse than declaring it late, and
+asymmetrically. An agent that reads a contract *builds* it — `domain → application →
+infrastructure` becomes four empty folders in a three-file app, reinforced by every file
+after. Late structure is only late. The seam has no such downside, because it is knowable
+at init and dangerous to omit.
+
+Deferral needs a trigger or it never happens. Rather than invent one, this reuses the ADR
+criterion already in `architecture.md`: that criterion can't be applied by someone who
+doesn't know the boundaries, so the first ADR to trip it is necessarily the moment the
+contract must exist.
+
+**Noticed, not built.** Two things in this template now cannot be enforced until the stack
+is chosen: pre-commit hooks, and the client/server seam. Both are named as pending rather
+than left implicit — the seam has its own row in the `stack.md` enforcement table, left
+visibly blank. If a third one appears, they should stop being scattered obligations and
+become a single named list in `stack.md` ("enforcement that activates at init"). Two isn't
+enough to justify the list; three is.
+
+**Alternatives considered:** Keeping `standards.md` openly TypeScript — rejected, the
+template has to serve a Python repo. Dropping numbers entirely — rejected, see above.
+Naming per-rule IDs in `stack.md` as a maintained second rulebook — rejected; the table is
+a pointer table, and only its *path* column is checkable. The tool-and-rule column is
+convention and is labelled as such rather than left to look authoritative. Declaring the
+whole boundary contract at init — rejected for the asymmetry above. Deferring all of it,
+including the seam — rejected, that leaves the only security-relevant boundary undeclared
+during the weeks it is cheapest to violate.
+
+---
+
 ## 2026-08-13 — Stop-list co-change check: designed, deferred
 **Decision:** Don't build a sync guard for the two stop-list copies yet. The design below
 is settled. The trigger to build it is the next edit to the stop-list in either file.

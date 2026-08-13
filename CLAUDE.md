@@ -66,6 +66,9 @@ work, that is also a stop: flag it in `docs/open-questions.md` and ask.
 - Write tests alongside code. Run them before saying anything is done.
 - If you can't explain in plain English what a block of code does, don't ship it.
 - Prefer boring, proven solutions over clever ones.
+- Never import server-only code into client code. That ships secrets in the bundle — a
+  security failure, not a tidiness one. The seam is declared in
+  `.ai/engineering/architecture.md`.
 
 ---
 

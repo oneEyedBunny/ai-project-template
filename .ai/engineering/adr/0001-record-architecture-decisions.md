@@ -9,6 +9,13 @@
 > Supersede by ADDING a line to the old ADR — `**Superseded by ADR-0007**` — rather than
 > by editing its Status. See the header of `docs/decisions-log.md` for the reasoning.
 
+> **Before writing an ADR that changes a module boundary, a dependency direction, or a
+> public interface:** check whether the structural boundary contract in
+> `architecture.md` still says NOT YET DECLARED. If it does, declaring it is part of
+> *this* ADR, not a follow-up. You cannot judge that an ADR is needed under that
+> criterion without knowing the boundaries, so this is the moment they get written down.
+> The obligation lives here because this is where you'll be standing when it applies.
+
 **Status:** Accepted
 **Date:** [YYYY-MM-DD]
 
