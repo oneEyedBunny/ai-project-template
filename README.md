@@ -58,7 +58,8 @@ template already provides; the rest can be added later if a project needs them.
 5. Once the stack is chosen, ask Claude to generate the matching config: linter,
    formatter, pre-commit hooks, and CI. (Deliberately left out until the stack exists —
    those files can't be generic.)
-6. Enable branch protection and mark this as a template repo (see below).
+6. Do the GitHub settings that aren't files — protect `master`, require the append-only
+   check, create the `amend-decision` label, and mark this as a template repo (see below).
 
 
 ## What's here
@@ -91,8 +92,11 @@ docs/
   handoff.md               How the client takes ownership (access, operability)
 scripts/
   check-decisions-immutable.sh  CI guard: decision records are append-only [reusable]
-.github/workflows/
-  decisions-immutable.yml  Runs that guard on every PR [reusable]
+.github/
+  workflows/
+    decisions-immutable.yml  Runs that guard on every PR [reusable]
+  CODEOWNERS               Review required on the enforcement files themselves
+                           — update the handle per repo [reusable]
 src/                       Application code
 .gitignore                 Scoped to secrets + build artifacts (NOT the .ai/ files)
 .env.example               Documents env vars without committing secrets
@@ -106,7 +110,10 @@ without disturbing the settled ones:
 - **Reusable** (teal): persona, operating rules, standards, review workflow — set once.
 - **Per client** (fill in): client context, glossary, constraints, stack.
 - **Living state**: decisions log, open questions, todo — updated every session.
-- **Enforcement**: gitignore now; linter/formatter/CI once the stack is chosen.
+- **Enforcement**: active today — gitignore, and CI enforcing that decision records are
+  append-only. Pending a stack choice — linter, formatter, type-checker, pre-commit
+  hooks, and test CI. `.ai/engineering/standards.md` describes rules in both groups, so
+  check `docs/todo.md` (project init) for which are actually wired.
 
 ## Client handoff
 
@@ -128,8 +135,14 @@ documented, accounts and secrets transferred, branch protection on. Reasoning in
 - **Require the "Decision records are append-only" check** on that same rule. The workflow
   is a file and ships automatically; marking it *required* is the manual part, and it only
   appears in the picker after it has run once. Full sequence in `docs/handoff.md`.
+- **Create the `amend-decision` label** (`gh label create amend-decision --force`). It's
+  the sanctioned override for the append-only check. Without it, the first pull request
+  that legitimately edits decision-log prose fails with no way to clear it.
 - **Template repository**: Settings → check "Template repository" for the one-click
   "Use this template" button on new projects.
+
+These are a summary. `docs/handoff.md` has the full ordered sequence, including the
+CODEOWNERS caveats and why step order matters for the status check.
 
 ## Getting this into GitHub
 
