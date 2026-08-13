@@ -4,6 +4,10 @@ This is the entry point. Claude reads this file first on every task. Keep it sho
 It does two jobs: (1) route to the right context files, (2) state the rules that are
 never optional.
 
+Repetition across layers is deliberate — a rule may appear here as a one-line
+reminder and in full in `.ai/`. Repetition within a single file is a bug. Router
+restatements stay one line; specifics live in one place only.
+
 ---
 
 ## How to work on this project
