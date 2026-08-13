@@ -69,8 +69,9 @@ Two conditions, both required:
 
 Worked examples from this repo: a date-based reminder to write the boundary contract fails
 (1). A check comparing stop-list item counts and per-item slugs fails (2) — the only real
-drift kept every item identity intact and changed one item's *scope*. The co-change check
-described in `docs/decisions-log.md` passes both, which is why it's the one that survived.
+drift kept every item identity intact and changed one item's *scope*. A co-change check —
+fail the pull request when one copy of a duplicated rule changes and the other doesn't —
+passes both, which is why that's the shape that survived.
 
 ## Nothing pushed straight to the default branch
 
