@@ -25,6 +25,26 @@ jobs:
           # editing on a repo whose default branch is named something else.
           BASE_REF: ${{ github.base_ref }}
           ALLOW_DECISION_EDIT: ${{ contains(github.event.pull_request.labels.*.name, 'amend-decision') }}
+        # The script is taken from the BASE branch, not from this pull request.
+        #
+        # CI checks out the PR, so running scripts/check-decisions-immutable.sh from
+        # the working tree would let one pull request delete a decision record AND
+        # edit the script's GUARDED list in the same commit — the check would inspect
+        # itself after being blinded, and pass. Reading it from origin/$BASE_REF means
+        # a change to the script only takes effect once it has been merged.
+        #
+        # The PR's *content* is still what gets inspected. Only the inspector is
+        # pinned to the trusted branch.
+        #
         # Invoked via `bash` rather than executed directly: Git on Windows does
         # not reliably preserve the executable bit.
-        run: bash scripts/check-decisions-immutable.sh
+        run: |
+          set -euo pipefail
+          if ! git cat-file -e "origin/${BASE_REF}:scripts/check-decisions-immutable.sh" 2>/dev/null; then
+            echo "No check script on origin/${BASE_REF}." >&2
+            echo "Expected on any repo where this workflow has been merged; if this is" >&2
+            echo "the pull request that first adds it, merge it and the guard is live." >&2
+            exit 2
+          fi
+          git show "origin/${BASE_REF}:scripts/check-decisions-immutable.sh" > "$RUNNER_TEMP/check.sh"
+          bash "$RUNNER_TEMP/check.sh"

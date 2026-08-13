@@ -8,9 +8,13 @@ declaring anything complete; the human reviewer checks it at the pull request.
 - [ ] The code does what the spec / issue asked, and nothing it didn't ask for.
 - [ ] Tests exist for the new behavior and they pass.
 - [ ] A bug fix includes a test that would have caught the bug.
-- [ ] Linter passes.
-- [ ] Formatter passes (code is formatted).
-- [ ] Type-checker passes with no new escape hatches (`any`, ignores) left unexplained.
+- [ ] Linter passes. *(If no linter is configured yet, this box is not "done by default"
+      — it's unavailable. Say so rather than ticking it; see project init in
+      `docs/todo.md`.)*
+- [ ] Formatter passes (code is formatted). Same caveat as above.
+- [ ] Type-checker passes, and every new suppression of it carries a reason — whether
+      that's a silent cast or a suppression directive. See the Types rule in
+      `.ai/engineering/standards.md`; the language-specific forms live there, not here.
 - [ ] No secrets anywhere (keys, tokens, passwords, `.env` contents).
 - [ ] No real client or user data in code, tests, fixtures, or logs.
 - [ ] A human on the team can explain, in plain English, what the code does.
@@ -20,8 +24,17 @@ declaring anything complete; the human reviewer checks it at the pull request.
 
 ## If it touches a high-risk area (auth, payments, data integrity, migrations, sync)
 
-- [ ] It was flagged and approved by a human before building (per the stop-list).
-- [ ] A second LLM did an adversarial review (see `review-checklist.md`).
+Two different gates apply here, and they cover different lists. Don't conflate them.
+
+- [ ] A second LLM did an adversarial review. This applies to **every** area named above —
+      see `review-checklist.md`.
+- [ ] **If, and only if, the change is on the stop-list in `CLAUDE.md`** — it was flagged
+      and approved by a human *before* building. The stop-list is scoped more tightly
+      than this heading. It covers auth, money movement, migrations, and the rule for how
+      sync conflicts resolve — but not "data integrity" as a general category, and not
+      ordinary feature work that merely happens to sync. Check the list rather than
+      inferring from this heading; an untrue tick certifies an approval that never
+      happened.
 - [ ] The offline/sync behavior is explicit and tested, if relevant.
 
 ## Before merge

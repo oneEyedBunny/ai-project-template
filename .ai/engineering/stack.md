@@ -52,6 +52,11 @@ for that tool, so a later reader can see what was weighed.
 3. Maintainers with commits in the last 6 months. One is a bus factor problem.
 4. Median time to close an issue.
 5. Whether tools already in this stack depend on it.
+6. What it drags in — count of transitive dependencies and installed size. This is the
+   one the pull-request review will not catch on its own: a manifest diff shows one added
+   line, and the tree underneath it only appears in a lockfile diff nobody reads. A
+   package that adds one direct dependency and ninety indirect ones is a different
+   decision from one that adds none, and the PR makes those look identical.
 
 GitHub stars are not a criterion. They are lifetime-cumulative, never decay, and
 measure a moment of attention rather than current health.

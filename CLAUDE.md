@@ -45,15 +45,25 @@ These are absolute. If a task requires one of these, STOP and ask first.
 
 1. **Touch authentication, authorization, or sessions.** Getting this wrong exposes
    every user. A human reviews any change here.
-2. **Change the database schema or write a migration.** A wrong migration can lose
+2. **Move money.** Charges, refunds, payouts, pricing arithmetic, anything a payment
+   provider acts on. A wrong one debits a real person, and unwinding it costs refunds,
+   chargebacks, and trust. Building *around* a payment flow is fine; changing what
+   charges whom is not.
+3. **Change the database schema or write a migration.** A wrong migration can lose
    client data and is hard to undo. Propose it, don't run it.
-3. **Upgrade an existing dependency.** A version bump changes behavior in ways a diff
+4. **Change how sync conflicts resolve.** The merge semantics themselves — what wins on
+   collision, what happens to the loser, what a client does with a rejected write.
+   Getting this wrong destroys data silently, and there is nothing to restore from.
+   Ordinary feature work that happens to sync is not on this list; the resolution policy
+   is.
+5. **Upgrade an existing dependency.** A version bump changes behavior in ways a diff
    does not show. Name the package and the target version; wait for approval.
    Adding a *new* dependency is not on this list — it is reviewed at the pull request
-   via the manifest diff. Justify it in the PR description.
-4. **Handle real client or personal data.** Never paste real user data into prompts,
+   against the selection rubric in `.ai/engineering/stack.md`. Justify it in the PR
+   description.
+6. **Handle real client or personal data.** Never paste real user data into prompts,
    logs, tests, or fixtures. Use fake data.
-5. **Commit anything secret.** API keys, tokens, passwords, `.env` contents. If you
+7. **Commit anything secret.** API keys, tokens, passwords, `.env` contents. If you
    need a secret, reference it by name from the environment — never inline it.
 
 If a requirement is ambiguous, or you find yourself assuming something to make it

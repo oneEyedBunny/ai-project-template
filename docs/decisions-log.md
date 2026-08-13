@@ -39,6 +39,155 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — The guard runs from the base branch, not from the pull request
+**Decision:** `.github/workflows/decisions-immutable.yml` now reads
+`scripts/check-decisions-immutable.sh` out of `origin/$BASE_REF` and runs that copy,
+instead of running the copy in the checked-out pull request.
+
+**Why.** The adversarial review's top finding: CI ran the script from the PR's own branch,
+so one commit could delete a decision record *and* comment out `.ai/engineering/adr` from
+the script's `GUARDED` list, and the check would inspect itself after being blinded and
+pass. Verified by executing it, before and after — the same attack passes against the old
+workflow and fails against the new one. The PR's content is still what gets inspected;
+only the inspector is pinned to a branch the PR cannot edit. A legitimate change to the
+script takes effect once merged, which is the correct order.
+
+**This replaces CODEOWNERS as the primary mitigation, and CODEOWNERS stays for the
+remainder.** Three attacks, three outcomes now:
+
+- Edit `GUARDED` and delete a record in one PR → blocked by this change.
+- Delete or rename the workflow so it never runs → blocked by the required status check,
+  which never reports and leaves the PR pending. This is why the workflow carries no path
+  filter.
+- Gut the workflow body while keeping the job name → **still passes.** For
+  `pull_request` events GitHub runs the workflow file from the PR branch, so no workflow
+  can defend against edits to itself.
+
+That last one is the honest residual and it cannot be closed by a check. Closing it needs
+either a second identity so code-owner review actually functions, or a ruleset rule
+restricting changes to `.github/workflows/**`. Both are open; neither is done.
+
+**Why not just do code-owner review now.** It requires an approval from a code owner who
+is not the PR author. This repo has one account, so every pull request would be
+unapprovable and would clear via admin bypass instead — a control bypassed every time,
+which `operating-rules.md` argues is worse than none. Recorded so this is not mistaken for
+an oversight.
+
+**What it cost:** the failure mode moved from "one plausible-looking edit defeats it" to
+"you must gut a workflow while preserving its job name," which cannot be dressed up as a
+refactor in a diff. One line of workflow, no second human.
+
+---
+
+## 2026-08-13 — Stop-list gains money and sync conflicts; dependency gate stays put
+**Decision:** Both policy questions left open by the adversarial review are now settled.
+
+**Money movement and sync-conflict resolution join the stop-list.** Seven items now. Both
+pass the shape test in `persona.md` — the cost of being wrong lands outside the pull
+request and is expensive to walk back. A wrong charge debits a real person; a wrong merge
+rule destroys data with nothing to restore from.
+
+**"Data integrity" is rejected as an item.** It is a category, not a change type. Almost
+any bug is a data-integrity bug at some altitude, so as a list entry it fires constantly —
+the exact failure that got new dependencies removed. Where it is concrete it is already
+covered: migrations, and now conflict resolution.
+
+**Why the fatigue objection doesn't apply here, since it killed a previous addition.**
+"Add a dependency" failed because adding packages is routine work, so the stop fired on
+ordinary activity and taught people to route around the list. Payment logic is written
+once and rarely revisited. Sync is scoped deliberately to *merge semantics* — what wins on
+collision, what happens to the loser — not to feature work that happens to sync. Scoped
+that way both fire almost never, and at the one moment that matters. The lesson from the
+dependency case is about *frequency of firing*, not about list length.
+
+**The dependency gate stays where it is; the rubric was the thing at fault.** The review
+argued that adding a new package should return to the stop-list because a manifest diff
+does not expose the transitive tree. The premise is right — technically the tree is in the
+lockfile, but nobody reads a lockfile diff, so the earlier entry's "reviewed at the PR via
+the manifest diff" claimed more than it delivered. The conclusion does not follow: that is
+a gap in *what the rubric measures*, not in *where the gate sits*. The five criteria in
+`stack.md` all covered project health and none asked what a package drags in. A sixth
+criterion now does. Moving the gate would have reintroduced the fatigue problem to solve a
+problem the rubric can solve in place.
+
+**Superseded in part, 2026-08-13** — this resolves the two questions the
+"Adversarial review: dispositions" entry below left open. Its other dispositions stand.
+
+**Also fixed: a broken reference in that entry.** It stated both questions were recorded
+in `docs/open-questions.md`; only one was. Caught while working these, and worth noting as
+the same defect class the review was hunting — a document describing repo state that was
+not true of the repo.
+
+**Note on the co-change case.** This is the first stop-list edit since the two-copy
+arrangement was set up, so it is the first live exercise of the co-change design recorded
+below. Both copies were updated in one commit, and a third file —
+`.ai/workflow/definition-of-done.md` — also needed updating, because a fix from earlier
+today named payments and sync as *not* on the stop-list. That third file is outside what
+the designed co-change check would have covered. Worth knowing before that check gets
+built: two files was the wrong count.
+
+---
+
+## 2026-08-13 — Adversarial review: dispositions
+**Decision:** An external adversarial review of this repo returned six findings. Four
+fixed, one recorded as an open question, one rejected. Two further defects it missed were
+found while verifying it and are also fixed.
+
+**Fixed — documents that lied about the repo's own state.** These are the class the review
+was right to lead with, because a reader cannot tell a false assertion from a true one:
+
+- `standards.md` asserted that types, linter, and formatter run on every commit and that
+  failing code "cannot be committed." None of that is wired on a fresh repo, and the file
+  said so ten lines earlier in the stack-agnostic note — it contradicted itself on one
+  page. Now states the pending condition explicitly.
+- `definition-of-done.md` claimed high-risk work "was flagged and approved by a human
+  before building (per the stop-list)" for five areas. The stop-list covers two of them.
+  A reviewer ticking that box was certifying an approval that could not have happened.
+- *(missed by the review)* The same file's "Linter passes / Formatter passes" boxes are
+  unavailable rather than passing when no linter exists. Same defect, second location.
+- *(missed by the review)* The same file's type rule still named `any` and "ignores" —
+  TypeScript-only, after `standards.md` was made language-neutral. The identical drift
+  T1 hit, in a file nobody re-checked.
+
+**Fixed — the guard did not guard itself.** CI runs
+`scripts/check-decisions-immutable.sh` from the pull request's own branch, so a PR can
+delete a decision record and edit the script's `GUARDED` list in the same commit and pass.
+Confirmed by executing it: exit 0 with an ADR line deleted. `.github/CODEOWNERS` now covers
+`/.github/` and `/scripts/`.
+
+Worth being precise about what this was and wasn't. The review called it silent; it isn't
+— the script edit appears in the diff. It was *unblocked*, not hidden, and the fix is to
+force someone to look rather than to detect anything new. Note also that this is the
+coupling `architecture.md` already warned about ("the guard silently stops covering
+them"): the repo documented that `GUARDED` was load-bearing and then left it unprotected,
+which is a sharper failure than not knowing.
+
+CODEOWNERS carries its own footgun, called out in the file and in `docs/handoff.md`: an
+owner without write access to the repo blocks every PR touching those paths. On a template
+that gets copied, a stale handle is worse than no file.
+
+**Raised as an open question, not fixed.** The review argued that removing "add a new
+dependency" from the stop-list was wrong because a manifest diff does not expose the
+transitive tree. That engages the recorded reasoning fairly and identifies a real gap in
+it — the earlier entry leaned on "reviewed at the PR via the manifest diff," which is
+weaker than it sounded. It does not weigh the cost that split was buying: a stop-list that
+fires on routine work trains people to route around all of it. Left as a policy question
+in `docs/open-questions.md`, together with whether payments and the sync boundary belong
+on the stop-list at all.
+
+**Rejected.** The review argued the boundary-contract marker fails because "due at the
+first boundary ADR, or at handoff" is a condition rather than a date, and that an agent
+needs a date to parse. Rejected on two grounds. It does not engage the record: a
+date-based trigger is rejected in `operating-rules.md` under "When a check earns its
+place," because a check firing on elapsed time carries no information about whether
+anything needs doing and trains dismissal. And its premise is wrong about the mechanism —
+the obligation was deliberately placed in `adr/0001` so an agent meets it while writing
+the ADR, rather than by remembering to consult `architecture.md`. The underlying worry
+(an agent inventing structure) is real; a date does not address it and costs the thing
+that does. Recorded so it is not re-raised as new.
+
+---
+
 ## 2026-08-13 — Handoff is the second trigger for the boundary contract
 **Decision:** Two triggers, not one. The ADR criterion fires at the decision moment;
 handoff is the guaranteed backstop. The marker in `architecture.md` now reads "due at the
