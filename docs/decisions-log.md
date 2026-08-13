@@ -1,8 +1,9 @@
 # Decisions log
 
 A running, lightweight record of choices made during the build. Not every choice —
-just the ones where someone might later ask "why did we do it that way?" that aren't
-big enough to be a full ADR.
+just the ones where someone might later ask "why did we do it that way?" For which
+choices belong here and which get an ADR instead, see the test under "Architecture
+Decision Records" in `.ai/engineering/architecture.md`.
 
 This is also part of Claude's memory across sessions: the repo remembers what the chat
 forgets. When you make a call mid-build, drop a line here.
@@ -35,6 +36,99 @@ CI enforces this. `scripts/check-decisions-immutable.sh` fails any pull request 
 a line from this file or from `.ai/engineering/adr/`. Adding the **Superseded** line passes;
 rewording the entry under it does not. If you genuinely need to edit — a typo, or clearing
 the placeholders below — put the `amend-decision` label on the PR.
+
+---
+
+## 2026-08-13 — Stop-list co-change check: designed, deferred
+**Decision:** Don't build a sync guard for the two stop-list copies yet. The design below
+is settled. The trigger to build it is the next edit to the stop-list in either file.
+
+**The design.** A co-change check: fail the pull request when the diff touches the
+stop-list in `CLAUDE.md` and does *not* touch the stop-list in
+`.ai/engineering/how-we-work-with-ai.md`. It does not verify that the two agree — nothing
+at this price can; see "What an automated check can actually do" in
+`.ai/operating-rules.md`. It removes "I didn't realize the other copy existed" as an
+available excuse, which is the same job the `amend-decision` label does for decision
+records.
+
+Scoping needs sentinels — a pair of HTML comment markers around the stop-list in both
+files, with the check asking whether any changed line falls between them. Whole-file
+co-change would fire on every edit to `CLAUDE.md`, a small router file that gets touched
+often, and a check that mostly cries wolf trains people to satisfy it reflexively. The
+cost is two markers that have to stay in place.
+
+Known hole, accepted: a token edit inside the sentinels satisfies the check and looks like
+ordinary work in the diff. That is slightly worse than the `amend-decision` hole, where
+the override is a named artifact a reviewer can interrogate.
+
+**Why defer.** Both copies are aligned as of this entry, and the list changes roughly once
+a year. A guard built today sits idle until the next edit, and idle enforcement is exactly
+where sentinel markers rot — someone reformats a file, the markers go with it, and the
+check silently stops covering anything. Building it at the moment of the next stop-list
+edit puts the guard and its first real use in the same pull request.
+
+**Alternatives considered:** Generating the plain-language copy from the canonical list —
+rejected: a build step is a permanent tax on a docs repo, and generated beginner prose
+reads like generated prose. Checking item count and a per-item slug across both files —
+rejected, and this is the instructive one: the only drift we have a specimen of (the
+dependency policy, same day) kept five items with identical identities and changed one
+item's *scope*. A slug check passes it clean. Reaching for identity because identity is
+cheap to check, then reasoning about drift in terms of what that check can see, is how you
+end up guarding the wrong thing. Accepting the risk with no guard at all — defensible,
+since the failure mode is over-caution rather than danger, but a teammate waved through a
+stop once will start guessing about the rest.
+
+---
+
+## 2026-08-13 — Drift-hardening pass on the template docs
+**Decision:** Eight changes aimed at rules that drift because they are stated twice, or
+stated too vaguely to apply the same way twice. Two are substantive; the rest are
+plumbing.
+
+The first substantive one: **decision records are append-only, enforced in CI.**
+`scripts/check-decisions-immutable.sh` fails any PR that removes a line from
+`docs/decisions-log.md` or `.ai/engineering/adr/`. Supersede by adding a line, never by
+editing the old text. The `amend-decision` PR label is the sanctioned override.
+
+The second: **the stop-list now has exactly one authoritative home.** It existed in three
+— `CLAUDE.md`, `.ai/engineering/how-we-work-with-ai.md`, and `.ai/persona.md` — and the
+three had already diverged, within a single editing session. Now:
+
+- `CLAUDE.md` is authoritative.
+- `how-we-work-with-ai.md` keeps a plain-language copy, explicitly marked as *not*
+  authoritative. It is a standalone onboarding doc for teammates new to AI coding, who
+  are told to read it first; a bare pointer would send them into a file addressed to
+  Claude. The copy is deliberate, and its risk is recorded in `docs/open-questions.md`.
+- `persona.md` no longer enumerates the list at all. It describes the shape the items
+  share, so there is nothing in it that can contradict `CLAUDE.md`.
+
+What exposed the divergence was a smaller change: **the dependency policy split.** Adding
+a new package is no longer a stop-list item — it is reviewed at the PR via the manifest
+diff, weighed against the new selection rubric in `.ai/engineering/stack.md`. Only
+*upgrading* an existing package needs sign-off, because a version bump changes behavior
+in ways the diff does not show. Editing one copy of the stop-list made the other two
+wrong, which is how the three-way duplication surfaced.
+
+The rest: a concrete ADR-vs-log test (module boundary, dependency direction, or public
+interface → ADR), a stated duplication convention (repeat across layers, never within a
+file), removal of a duplicated no-secrets bullet, and six one-time repo setup steps in
+`docs/handoff.md`.
+
+**Why:** The template's value is that a rule means the same thing on session 30 as on
+session 1. A rule stated in two places drifts when only one copy is updated; a rule
+stated as a vague judgment call about how weighty a decision feels is re-judged every
+time. Both were present. Enforcement that lives in CI rather than in prose is the part
+that cannot be forgotten.
+
+The stop-list is the highest-stakes list in the repo. Three copies meant three chances to
+be wrong about when to stop, and the wrong copy is the one someone happens to read.
+
+**Alternatives considered:** Leaving the append-only rule as prose only — rejected, it is
+exactly the kind of rule that erodes silently. Blocking new dependencies as well as
+upgrades — rejected, it made the stop-list fire constantly for routine work, which trains
+people to route around the whole list. Collapsing the `how-we-work-with-ai.md` copy into a
+pointer — rejected on audience grounds, see above; that file's whole premise is that you
+can read it and nothing else.
 
 ---
 

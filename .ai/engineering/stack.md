@@ -8,6 +8,24 @@
 > get generated to match — those are the "automated guardrails" and they can't be
 > generic. Ask Claude to generate them once the stack is settled.
 
+## How a tool gets chosen
+
+Evaluate against these before committing to anything. Record the result in the entry
+for that tool, so a later reader can see what was weighed.
+
+1. Weekly download trend — direction over the last year, not the absolute number.
+2. Last release date. Nothing published in 12 months is a risk, not a stable tool.
+3. Maintainers with commits in the last 6 months. One is a bus factor problem.
+4. Median time to close an issue.
+5. Whether tools already in this stack depend on it.
+
+GitHub stars are not a criterion. They are lifetime-cumulative, never decay, and
+measure a moment of attention rather than current health.
+
+An AI assistant recommending a tool is pattern-matching on training data, not
+consulting these numbers, and its knowledge has a cutoff. Treat any suggested tool
+as a candidate to verify against the list above.
+
 ## Frontend framework
 **Choice:**
 **Why:**

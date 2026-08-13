@@ -41,6 +41,19 @@ for high-stakes code only:
 For routine UI and CRUD, human review is enough — don't pay the review tax everywhere.
 See `.ai/workflow/review-checklist.md` for the shared reviewer prompt and checklist.
 
+## What an automated check can actually do
+
+Every check cheap enough to run here matches strings — the append-only guard on decision
+records, and anything similar added later. String matching catches *structural* edits: a
+line removed, a file renamed, a section left untouched. It misses *semantic* ones. Restate
+a rule in different words and it passes clean.
+
+So the ceiling is not preventing divergence. It is making divergence deliberate — turning
+"nobody noticed" into "someone chose this, and left a mark." That is worth building, and
+it is all that is on offer at this price. A check advertised as doing more is either
+expensive (a model in the loop, a generated artifact) or lying, and a lying check is worse
+than none: people stop looking at what it claims to cover.
+
 ## Nothing pushed straight to the default branch
 
 The default branch on this repo is **`master`**. Branch from it and target pull requests

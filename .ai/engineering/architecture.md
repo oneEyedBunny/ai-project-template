@@ -36,6 +36,13 @@
 Significant "why we chose X over Y" decisions live as individual files in `adr/`.
 Add a line here each time one is written.
 
+Use an ADR when the decision changes a module boundary, a dependency direction, or a
+public interface. Everything else goes in `docs/decisions-log.md`.
+
+Both paths are hardcoded in `scripts/check-decisions-immutable.sh`, which enforces that
+these records are append-only. Moving `adr/` or `docs/decisions-log.md` means updating
+the `GUARDED` list in that script, or the guard silently stops covering them.
+
 - ADR-0001: [title] — see `adr/0001-*.md`
 
 <!-- EXAMPLE (delete when filling in):
