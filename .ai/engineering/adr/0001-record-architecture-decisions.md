@@ -28,9 +28,9 @@ sometimes contradict them.
 
 ## Decision
 
-We record every significant architecture and technology decision as an ADR: a short,
-numbered markdown file capturing the context, the decision, and the consequences. One
-file per decision, in this directory.
+We record architecture decisions as ADRs: a short, numbered markdown file capturing the
+context, the decision, and the consequences. One file per decision, in this directory.
+Which decisions qualify is defined below, in one place.
 
 ## Consequences
 
@@ -41,9 +41,14 @@ things are the way they are. We stop re-deciding.
 
 ## What counts as "significant"
 
-Choosing a framework, a data store, an auth approach, an offline-sync strategy, a
-hosting platform — anything where a reasonable person might later ask "why did we do it
-*this* way?" Routine implementation choices don't need an ADR.
+One test, and it is stated in `.ai/engineering/architecture.md` under "Architecture
+Decision Records": use an ADR when the decision changes a module boundary, a dependency
+direction, or a public interface. Everything else goes in `docs/decisions-log.md` —
+including most framework, data store, and hosting choices.
+
+That is narrower than "anything architectural," deliberately. The log is equally durable
+and equally append-only, so routing a decision there loses nothing. What gets lost when
+`adr/` fills up is that anyone still reads it.
 
 ---
 

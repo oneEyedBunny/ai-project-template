@@ -53,8 +53,11 @@ so if any of these don't make sense, ask why. The "why" matters more than the ru
 3. Work with Claude to build it. Ask it to write tests too.
 4. Run the tests. Read the code. Understand it. Ask about anything unclear.
 5. Open a pull request. Ally reviews everything, at first.
-6. The automated checks (formatting, types, tests) run on their own — if they fail,
-   the code isn't ready. That's the safety net, not an insult.
+6. Once the project's checks exist, they run on their own — formatting, types, tests —
+   and if they fail, the code isn't ready. That's the safety net, not an insult.
+   On a fresh repo they aren't wired yet; they get generated once the stack is chosen.
+   Until then step 4 is the only thing checking, so look for the config files rather
+   than assuming a green pull request means anything ran.
 
 ## When the AI and you disagree
 
