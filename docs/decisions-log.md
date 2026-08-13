@@ -39,6 +39,127 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — Handoff is the second trigger for the boundary contract
+**Decision:** Two triggers, not one. The ADR criterion fires at the decision moment;
+handoff is the guaranteed backstop. The marker in `architecture.md` now reads "due at the
+first boundary ADR, or at handoff, whichever comes first," and the standing checklist in
+`docs/todo.md` carries the item.
+
+**Why a second trigger.** The failure this addresses splits in two, and only one half is a
+problem. If a project genuinely made no boundary decisions, the marker is *accurate* and
+there is nothing to fix. The real case is the other one: boundaries got established
+without anyone recognizing them as decisions, so no ADR fired. That is not a failure of
+deferring — it is the ADR criterion not being self-firing. It depends on recognition, and
+the person establishing a boundary by accident is the one least able to recognize it.
+
+Handoff works as the backstop because the delivery model guarantees the event, the
+checklist already runs at it, and it lands when someone is reviewing repo state rather
+than mid-task.
+
+**The two triggers write different artifacts, and this is the part worth keeping.** At the
+ADR the contract is a *constraint* — the build is live and its job is to rule things out.
+At handoff it is a *description* — the structure is already set, and a constraint written
+then hands the successor a picture of the architecture we wish we'd built. Unstated, this
+produces fiction, confidently. If a contract already exists at handoff, the pass is not
+rewriting it: **annotate**, with a dated as-built block underneath the original.
+
+Annotate over replace or side-by-side: replacing destroys the evidence that the code
+drifted, which is precisely what a successor cannot reconstruct; two contracts side by side
+leave them unable to tell which governs. Annotating reuses the supersession shape already
+established in this log — never edit the original, add a marked line.
+
+The as-built answer must be written even when it is "no divergence." Blank is
+indistinguishable from clean, and this is the item most likely to be dropped under
+delivery pressure, because recording mess reads as admitting it.
+
+**Considered and rejected: a check on new top-level directories under `src/`.** It targets
+the right gap — the moment structure is created by accident — and it fires on a change
+rather than on time, so it passes that test. It fails the other one: directories are
+created for many non-boundary reasons, the false-positive rate is high, and a noisy check
+trains dismissal that generalizes to checks carrying real information. Recorded here so it
+does not get re-proposed as fresh.
+
+**Also rejected: a date-based nag.** It fires on elapsed time and so carries no information
+about whether anything needs doing. Worse, it does not address the real case at all — the
+blindness that stopped the ADR from firing produces a contract that ratifies whatever
+accreted. The generalized rule from both rejections is now in `.ai/operating-rules.md`
+under "When a check earns its place."
+
+**What this does and does not buy.** It does not guarantee the contract gets written. It
+guarantees that *not* writing it is a recorded choice by the time the repo leaves our
+hands. Given every check available here is structural rather than semantic, that is the
+honest maximum — consistent with the ceiling already stated in `operating-rules.md`.
+
+**Recorded limitation, no action.** Both triggers assume a delivery event. A long-running
+internal repo has neither: no handoff, and an ADR criterion that still depends on someone
+recognizing a boundary. The gap is real, but it sits outside the case this template was
+built for, so the fix belongs to whoever adapts the template for internal use rather than
+here. The marker reading "or at handoff" is what makes that inherited assumption visible —
+depending on it silently would be worse.
+
+Two things that keep this cheap, recorded so they don't have to be re-derived. First, a
+long-running internal project is the case where the ADR criterion is *most* likely to fire
+on its own: more decisions accumulate, so more chances to cross a boundary threshold. The
+missing backstop matters less there than the bare gap suggests. Second, that leaves the
+both-triggers-silent scenario as a *small* internal project — which is also the scenario
+where a contract matters least. Same shape as the split at the top of this entry: a marker
+sitting indefinitely on a project that made no boundary decisions is accurate, not stale.
+The gap is concentrated where its cost is close to zero, which is why no further mechanism
+is the right answer rather than merely an affordable one.
+
+---
+
+## 2026-08-13 — Standards are stack-agnostic; boundary contract splits by kind
+**Decision:** Three layers. `standards.md` holds the invariant and an example.
+`stack.md` holds which tool enforces it and where that tool is configured. The config file
+holds the number. `standards.md` keeps *indicative* numbers, explicitly marked as not the
+enforced value.
+
+The boundary contract splits in two, declared at different times:
+
+- **The client/server seam is declared at init.** You know at repo creation whether there
+  is a server side, and its violation ships a secret in a bundle — a security failure, not
+  a design smell. It also gets a one-line reminder in `CLAUDE.md`'s non-negotiables.
+- **The structural shape (layered, or feature/shared/ui) is deferred**, with the first ADR
+  that trips the T6 criterion as the trigger, and a visible NOT YET DECLARED marker until
+  then.
+
+**Why:** The three-layer split assumed all three layers exist. On a new project none of
+them do except prose, and that window — before stack selection — is exactly when the first
+feature gets written. Hence indicative numbers: an agent given "split when it smells" has
+nothing to calibrate against and will write a 90-line function. They are marked
+non-enforced so the first project doesn't set its linter to 30 by default rather than by
+choice.
+
+On the boundary halves: declaring structure early is worse than declaring it late, and
+asymmetrically. An agent that reads a contract *builds* it — `domain → application →
+infrastructure` becomes four empty folders in a three-file app, reinforced by every file
+after. Late structure is only late. The seam has no such downside, because it is knowable
+at init and dangerous to omit.
+
+Deferral needs a trigger or it never happens. Rather than invent one, this reuses the ADR
+criterion already in `architecture.md`: that criterion can't be applied by someone who
+doesn't know the boundaries, so the first ADR to trip it is necessarily the moment the
+contract must exist.
+
+**Noticed, not built.** Two things in this template now cannot be enforced until the stack
+is chosen: pre-commit hooks, and the client/server seam. Both are named as pending rather
+than left implicit — the seam has its own row in the `stack.md` enforcement table, left
+visibly blank. If a third one appears, they should stop being scattered obligations and
+become a single named list in `stack.md` ("enforcement that activates at init"). Two isn't
+enough to justify the list; three is.
+
+**Alternatives considered:** Keeping `standards.md` openly TypeScript — rejected, the
+template has to serve a Python repo. Dropping numbers entirely — rejected, see above.
+Naming per-rule IDs in `stack.md` as a maintained second rulebook — rejected; the table is
+a pointer table, and only its *path* column is checkable. The tool-and-rule column is
+convention and is labelled as such rather than left to look authoritative. Declaring the
+whole boundary contract at init — rejected for the asymmetry above. Deferring all of it,
+including the seam — rejected, that leaves the only security-relevant boundary undeclared
+during the weeks it is cheapest to violate.
+
+---
+
 ## 2026-08-13 — Stop-list co-change check: designed, deferred
 **Decision:** Don't build a sync guard for the two stop-list copies yet. The design below
 is settled. The trigger to build it is the next edit to the stop-list in either file.

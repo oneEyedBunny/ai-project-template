@@ -8,6 +8,17 @@ here (those live in `open-questions.md`).
 > Keep this file only as a simple starting point, OR keep it just for the standing
 > handoff checklist below, which doesn't map cleanly to a feature issue.
 
+## Project init (do these once, when the stack is chosen)
+
+- [ ] Declare the client/server seam in `.ai/engineering/architecture.md` — this one is
+      not deferrable; see the note there
+- [ ] Fill in the enforcement table in `.ai/engineering/stack.md`, then generate the
+      config files from it
+- [ ] Rewrite the `standards.md` examples in the project's language, or confirm the
+      project is TypeScript and leave them
+- [ ] Decide whether `persona.md` / `standards.md` / `patterns.md` are this client's
+      deliverable (record in `.ai/client/constraints.md` — see `docs/handoff.md`)
+
 ## In progress
 
 ## Up next
@@ -45,3 +56,11 @@ every box before handing over. See `docs/handoff.md` for the reasoning.
 - [ ] `.ai/client/glossary.md` is current — it's the file that saves the next dev
 - [ ] Open items are written down in `docs/open-questions.md`, not left verbal
 - [ ] They know we built with AI, what `.ai/` is for, and how to keep using it
+- [ ] Structural boundary contract in `.ai/engineering/architecture.md` is resolved:
+      either declared, or recorded as a deliberate "no boundaries worth contracting."
+      This is the deadline for it — see the status marker in that file.
+- [ ] The as-built check is **answered in writing**, including when the answer is
+      "no divergence." Leave it blank and it's indistinguishable from clean. Where the
+      code disagrees with the declared contract, say where — that gap is the one thing a
+      successor cannot reconstruct from the code, and it's the item most likely to get
+      dropped under delivery pressure because writing it down reads as admitting mess.

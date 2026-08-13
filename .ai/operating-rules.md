@@ -54,6 +54,24 @@ it is all that is on offer at this price. A check advertised as doing more is ei
 expensive (a model in the loop, a generated artifact) or lying, and a lying check is worse
 than none: people stop looking at what it claims to cover.
 
+### When a check earns its place
+
+Two conditions, both required:
+
+1. **It fires on a change, not on elapsed time.** A check triggered by the calendar
+   carries no information about whether anything actually needs doing, so it gets
+   dismissed on reflex — and that habit generalizes to the checks that *do* carry
+   information. A time-based nag is worse than no check at all.
+2. **It can see the thing that goes wrong.** Match the check to the real failure mode,
+   not to whatever is cheapest to inspect. Reaching for the cheap signal and then
+   reasoning about the risk in terms of what that signal happens to see is how you end up
+   guarding the wrong thing confidently.
+
+Worked examples from this repo: a date-based reminder to write the boundary contract fails
+(1). A check comparing stop-list item counts and per-item slugs fails (2) — the only real
+drift kept every item identity intact and changed one item's *scope*. The co-change check
+described in `docs/decisions-log.md` passes both, which is why it's the one that survived.
+
 ## Nothing pushed straight to the default branch
 
 The default branch on this repo is **`master`**. Branch from it and target pull requests
