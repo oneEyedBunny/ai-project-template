@@ -43,8 +43,10 @@ These are absolute. If a task requires one of these, STOP and ask first.
    every user. A human reviews any change here.
 2. **Change the database schema or write a migration.** A wrong migration can lose
    client data and is hard to undo. Propose it, don't run it.
-3. **Add or upgrade a dependency.** New dependencies are new risk and new attack
-   surface. Name the one you want and why; wait for approval.
+3. **Upgrade an existing dependency.** A version bump changes behavior in ways a diff
+   does not show. Name the package and the target version; wait for approval.
+   Adding a *new* dependency is not on this list — it is reviewed at the pull request
+   via the manifest diff. Justify it in the PR description.
 4. **Handle real client or personal data.** Never paste real user data into prompts,
    logs, tests, or fixtures. Use fake data.
 5. **Commit anything secret.** API keys, tokens, passwords, `.env` contents. If you
