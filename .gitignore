@@ -58,6 +58,12 @@ Thumbs.db
 # per-machine overrides are not.
 .claude/settings.local.json
 
+# Local working docs — planning scaffolding, not deliverables.
+# This repo ships everything by default (see docs/handoff.md), so anything that is
+# genuinely internal has to opt out by name. Use the .local.md suffix for scratch plans,
+# setup notes, and anything half-formed you don't want a client reading.
+*.local.md
+
 # NOTE: The .ai/ context files, docs/, and specs/ are intentionally NOT ignored.
 # They are the shared source of truth — teammates, the client, and Claude must all get
 # them on clone. They ship with the project (see docs/handoff.md).
