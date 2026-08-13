@@ -8,8 +8,10 @@ declaring anything complete; the human reviewer checks it at the pull request.
 - [ ] The code does what the spec / issue asked, and nothing it didn't ask for.
 - [ ] Tests exist for the new behavior and they pass.
 - [ ] A bug fix includes a test that would have caught the bug.
-- [ ] Linter passes.
-- [ ] Formatter passes (code is formatted).
+- [ ] Linter passes. *(If no linter is configured yet, this box is not "done by default"
+      — it's unavailable. Say so rather than ticking it; see project init in
+      `docs/todo.md`.)*
+- [ ] Formatter passes (code is formatted). Same caveat as above.
 - [ ] Type-checker passes with no new escape hatches (`any`, ignores) left unexplained.
 - [ ] No secrets anywhere (keys, tokens, passwords, `.env` contents).
 - [ ] No real client or user data in code, tests, fixtures, or logs.
