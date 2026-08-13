@@ -15,7 +15,7 @@ here (those live in `open-questions.md`).
 - [ ] Point `.github/CODEOWNERS` at a reviewer with write access on this repo. Turn on
       "require review from Code Owners" **only if someone other than the PR author can
       approve** — on a one-person repo it makes every PR bypass-only, which is worse than
-      leaving it off. See `docs/handoff.md`
+      leaving it off. See `docs/setup.md`
 - [ ] Fill in the enforcement table in `.ai/engineering/stack.md`, then generate the
       config files from it
 - [ ] Rewrite the `standards.md` examples in the project's language, or confirm the
@@ -48,9 +48,16 @@ every box before handing over. See `docs/handoff.md` for the reasoning.
 - [ ] Repo ownership transferred to the client's GitHub org (or their account)
 - [ ] Their team's access confirmed working — someone on their side has pushed or
       opened a PR successfully
-- [ ] Branch protection enabled on `master`
-- [ ] "Decision records are append-only" marked as a required status check on that
-      branch rule, and the `amend-decision` label created — see `docs/handoff.md`
+- [ ] Branch protection **still** enabled on `master` in their org — opened the settings
+      and looked, not assumed from having set it at project init
+- [ ] "Decision records are append-only" still required on that rule, and the
+      `amend-decision` label still exists in their repo
+- [ ] `.github/CODEOWNERS` points at someone with write access in *their* org, or the file
+      is deleted — our handle stops working the moment ownership moves, and every PR
+      touching `/.github/` or `/scripts/` blocks with an error that doesn't explain itself
+
+      These three are verifications, not a repeat of `docs/setup.md`. They read the same
+      and are not — see "What transferring ownership breaks" in `docs/handoff.md`.
 - [ ] Any third-party accounts we set up (hosting, DB, APIs, domains) are in their
       name or transferred, and billing points at them
 

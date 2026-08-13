@@ -78,4 +78,5 @@ The default branch on this repo is **`master`**. Branch from it and target pull 
 at it — there is no `main`.
 
 All work goes through a branch and a pull request. `master` is protected. This is a
-GitHub setting, not a file — see `docs/handoff.md` and the README for how to enable it.
+GitHub setting, not a file — `docs/setup.md` has how to enable it. On a repo where that
+step was skipped, this section describes an intention rather than a control.

@@ -55,11 +55,11 @@ template already provides; the rest can be added later if a project needs them.
 
    See "How this template works with agent-skills" for which skill covers which phase.
 
-5. Once the stack is chosen, ask Claude to generate the matching config: linter,
-   formatter, pre-commit hooks, and CI. (Deliberately left out until the stack exists —
-   those files can't be generic.)
-6. Do the GitHub settings that aren't files — protect `master`, require the append-only
-   check, create the `amend-decision` label, and mark this as a template repo (see below).
+5. **Work through `docs/setup.md`.** Everything left is a setting or a generated config
+   rather than a file that ships in the template — branch protection, the required check,
+   the `amend-decision` label, `CODEOWNERS`, and the linter/formatter/hooks/CI once the
+   stack is chosen. Steps 1–4 above fail loudly if you skip them; these fail silently,
+   and several of them are what make this repo's stated guardrails actually true.
 
 
 ## What's here
@@ -89,6 +89,7 @@ docs/
   decisions-log.md         Running record of mid-build choices
   open-questions.md        Blocked-on-a-human decisions (the translation queue)
   todo.md                  Work queue + STANDING handoff checklist
+  setup.md                 Day-one GitHub settings that turn the guardrails on
   handoff.md               How the client takes ownership (access, operability)
 scripts/
   check-decisions-immutable.sh  CI guard: decision records are append-only [reusable]
@@ -129,20 +130,14 @@ documented, accounts and secrets transferred, branch protection on. Reasoning in
 
 ## GitHub settings (not files — do these by hand)
 
-- **Protect `master`**: require a pull request to merge. Settings → Rules → Rulesets, or
-  Settings → Branches on a repo using older branch protection — see `docs/handoff.md`,
-  which explains how to tell which one your repo uses.
-- **Require the "Decision records are append-only" check** on that same rule. The workflow
-  is a file and ships automatically; marking it *required* is the manual part, and it only
-  appears in the picker after it has run once. Full sequence in `docs/handoff.md`.
-- **Create the `amend-decision` label** (`gh label create amend-decision --force`). It's
-  the sanctioned override for the append-only check. Without it, the first pull request
-  that legitimately edits decision-log prose fails with no way to clear it.
-- **Template repository**: Settings → check "Template repository" for the one-click
-  "Use this template" button on new projects.
+Branch protection, the required append-only check, the `amend-decision` label, `CODEOWNERS`,
+and the pre-commit hooks are settings rather than files. The repo cannot turn them on for
+itself, and nothing fails loudly if you skip them — it just quietly has no guardrails while
+several files claim it does.
 
-These are a summary. `docs/handoff.md` has the full ordered sequence, including the
-CODEOWNERS caveats and why step order matters for the status check.
+**The ordered sequence is `docs/setup.md`.** Deliberately the only copy: a summary here
+would be a second version to drift, and this is the one place in the repo where a stale
+instruction means a control that was never actually switched on.
 
 ## Getting this into GitHub
 
