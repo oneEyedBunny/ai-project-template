@@ -28,9 +28,10 @@ When something is blocked on a human decision, add it to `docs/open-questions.md
 
 ---
 
-## Build / verify / ship workflow
+## Plan / build / verify / ship workflow
 
 For execution, use the installed agent-skills (see README for install):
+- Starting a feature, before any code → `spec-driven-development`
 - Building a feature → `incremental-implementation` + `test-driven-development`
 - Something breaks → `debugging-and-error-recovery`
 - Committing / PRs → `git-workflow-and-versioning`

@@ -10,12 +10,13 @@ so each new project is one click). This project uses a combo of custom built fil
 It carries the things that are specific to *us and this client*: the operating
 persona and stop-list, the client context and domain glossary, our engineering
 standards, our patterns, the handoff process. No general-purpose tool can supply
-these, because they're ours. We lean on our own `specs/` folder and glossary for the spec-driven-development (SDD).
+these, because they're ours. That includes the `specs/` folder and the glossary —
+where a spec lives and what language it has to use.
 
 **[agent-skills](https://github.com/addyosmani/agent-skills) owns
 execution workflow — the HOW.** It's a pack of production-grade engineering
 workflows the AI follows step by step. We use a focused subset of it (not the
-whole pack) to cover the build/verify/ship middle that this template
+whole pack) to cover the plan/build/verify/ship spine that this template
 deliberately leaves thin. Those skills are installed into the AI agent, not
 stored in this repo — so we always get their latest version, and credit stays
 with their author.
@@ -24,14 +25,19 @@ with their author.
 
 | Phase  | Skill (from agent-skills)     | What it enforces                                    |
 | ------ | ----------------------------- | --------------------------------------------------- |
+| Plan   | `spec-driven-development`     | Spec before code: specify → plan → tasks → implement, with assumptions surfaced as questions |
 | Build  | `incremental-implementation`  | Thin vertical slices: implement → test → verify → commit, one at a time |
 | Build  | `test-driven-development`     | Red-green-refactor; tests as proof, not afterthought |
 | Verify | `debugging-and-error-recovery`| Disciplined triage when things break: reproduce → localize → fix → guard |
 | Ship   | `git-workflow-and-versioning` | Atomic commits and the branch-and-PR flow our branch protection requires |
 
 Everything else in agent-skills (its 24 skills total) is intentionally left out
-for now. Its ADR, definition-of-done, and spec skills overlap with what this
-template already provides; the rest can be added later if a project needs them.
+for now. Its ADR and definition-of-done skills overlap with what this template
+already provides; the rest can be added later if a project needs them.
+
+`spec-driven-development` and `specs/` are not a duplicate pair: the folder is
+where a spec lives and what shape it takes, the skill is the discipline of
+writing one before code and turning it into tasks. Neither supplies the other.
 
 ## Quick start for a new client
 
@@ -42,11 +48,12 @@ template already provides; the rest can be added later if a project needs them.
    - You can paste each to Claude and answer conversationally — it writes the structured
      version back.
 3. Tweak the reusable engineering files if needed (they usually stand as-is).
-4. Install the agent-skills we use for build/verify/ship (pulled from
+4. Install the agent-skills we use for plan/build/verify/ship (pulled from
    [agent-skills](https://github.com/addyosmani/agent-skills), not stored in this repo).
    Run once per machine or project:
 
    ```bash
+   npx skills add addyosmani/agent-skills --skill spec-driven-development
    npx skills add addyosmani/agent-skills --skill incremental-implementation
    npx skills add addyosmani/agent-skills --skill test-driven-development
    npx skills add addyosmani/agent-skills --skill debugging-and-error-recovery
