@@ -6,8 +6,9 @@ How work moves from idea to shipped. Reusable across clients.
 
 1. **Spec first.** Non-trivial features start with a spec in `specs/` — copy
    `specs/_template/spec.md` into `specs/00N-feature-name/spec.md` and fill it in.
-   See `specs/README.md` for the convention. No spec for a real feature means we
-   don't yet understand it well enough to build it.
+   The `spec-driven-development` skill carries it from there into a technical plan and a
+   task breakdown, both in that same folder. See `specs/README.md` for the convention. No
+   spec for a real feature means we don't yet understand it well enough to build it.
 2. **Tests as the target.** Turn the spec's acceptance criteria into tests, ideally
    before or alongside the implementation. "Make it work" becomes a concrete, checkable
    target instead of a vibe.

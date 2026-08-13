@@ -7,12 +7,25 @@ specs/
   _template/spec.md        Copy this to start a new one
   001-feature-name/
     spec.md                Required. The what and the why.
+    plan.md                From spec-driven-development. The technical approach.
+    tasks.md               From spec-driven-development. The breakdown.
     notes.md               Optional. Scratch, sketches, links.
 ```
 
-`spec.md` is the only required file. The build sequence (slices, tasks, commits) is
-owned by the `incremental-implementation` skill at build time, not written up front —
-a task list authored before the work starts is stale by the second slice.
+`spec.md` is the only required file you write by hand. `plan.md` and `tasks.md` come out
+of the `spec-driven-development` skill, which turns an agreed spec into a technical plan
+and then into tasks sized to land in one session. `incremental-implementation` executes
+them, slicing riskiest-first and re-cutting the list when an early slice proves it wrong.
+
+So the breakdown *is* written before the work — but it's a starting point, not a
+contract. Expect it to change by the second slice; that's the incremental skill doing its
+job, not the plan having failed.
+
+**Where those files go, because the skill defaults elsewhere.** Its convention is
+`tasks/plan.md` and `tasks/todo.md` at the repo root. Here they live in the feature's own
+folder, named as above. Two reasons: one feature stays one folder, and a root
+`tasks/todo.md` would sit next to `docs/todo.md` — the cross-feature work queue and
+handoff checklist — which are different things that would be read as the same one.
 
 ## How the layers compose
 
