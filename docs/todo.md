@@ -12,6 +12,9 @@ here (those live in `open-questions.md`).
 
 - [ ] Declare the client/server seam in `.ai/engineering/architecture.md` — this one is
       not deferrable; see the note there
+- [ ] Point `.github/CODEOWNERS` at a reviewer with write access on this repo, and turn
+      on "require review from Code Owners." A handle without access blocks every PR
+      touching `/.github/` or `/scripts/`; see `docs/handoff.md`
 - [ ] Fill in the enforcement table in `.ai/engineering/stack.md`, then generate the
       config files from it
 - [ ] Rewrite the `standards.md` examples in the project's language, or confirm the

@@ -77,5 +77,17 @@ Do these in order — steps 1 and 2 depend on each other.
 5. **Wire pre-commit hooks for the chosen stack.** `.ai/engineering/standards.md` states
    that types, linter, and formatter run on every commit — until this step is done, that
    statement is not true of the project.
-6. **Add `.github/workflows/` to `CODEOWNERS`** so enforcement cannot be weakened
-   without review.
+6. **Point `CODEOWNERS` at a real reviewer, and require code-owner review.** The file
+   ships at `.github/CODEOWNERS` covering `/.github/` and `/scripts/` — the paths that
+   contain the enforcement itself. Two things have to happen or it does nothing:
+
+   - **Replace the handle** with someone who has write access to *this* repo. An owner
+     without access can't approve, so every PR touching those paths blocks with an
+     unhelpful error. A wrong handle is worse than no file.
+   - **Turn it on:** Settings → Branches (or Rules → Rulesets) → require review from
+     Code Owners. Without that, `CODEOWNERS` is advisory and the gap it closes stays open.
+
+   What it closes: CI runs `scripts/check-decisions-immutable.sh` from the pull request's
+   own branch, so a PR can delete a decision record and edit the script's `GUARDED` list
+   in the same commit, and the check passes. The edit shows in the diff; this makes
+   someone look at it.
