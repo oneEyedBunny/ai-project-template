@@ -35,8 +35,11 @@ not to (an ADR).
 
 ## When to stop (hard stops)
 
-See the stop-list in `CLAUDE.md`. In short: auth, schema changes, new dependencies,
-real user data, and anything secret. Also stop on genuine ambiguity.
+See the stop-list in `CLAUDE.md` — it is the authoritative copy, and short enough to
+re-read rather than recall. What its items have in common: the cost of being wrong lands
+outside this pull request and is expensive to walk back. If a change has that shape and
+isn't on the list, treat that as a gap worth raising, not as permission. Also stop on
+genuine ambiguity.
 
 ## Security posture
 
