@@ -19,12 +19,18 @@ This one rule prevents most beginner disasters. It's completely fine to ask Clau
 
 ## The stop-list (also in CLAUDE.md)
 
+`CLAUDE.md` holds the authoritative copy of this list — if the two ever disagree, that
+one wins and this one is the bug. It's repeated here in plainer language so you don't
+have to read a file written for the AI.
+
 Never let the AI do these on its own. Bring them to Ally first. Each has a reason:
 
 1. **Auth / login code** — get it wrong and everyone's account is exposed.
 2. **Database schema changes / migrations** — a wrong one can permanently lose the
    client's data, and it's hard to undo.
-3. **Adding a new dependency / library** — each one is new risk; we decide together.
+3. **Upgrading a library we already use** — a version bump can change how it behaves in
+   ways the diff doesn't show. Adding a *brand-new* library isn't on this list: propose
+   it in the pull request and say why you picked that one.
 4. **Real client or user data** — never paste it into the AI, into tests, or into logs.
    Use fake data.
 5. **Anything secret** — API keys, passwords. These never go into the code or the chat.
