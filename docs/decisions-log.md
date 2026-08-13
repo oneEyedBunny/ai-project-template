@@ -39,6 +39,66 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — Adversarial review: dispositions
+**Decision:** An external adversarial review of this repo returned six findings. Four
+fixed, one recorded as an open question, one rejected. Two further defects it missed were
+found while verifying it and are also fixed.
+
+**Fixed — documents that lied about the repo's own state.** These are the class the review
+was right to lead with, because a reader cannot tell a false assertion from a true one:
+
+- `standards.md` asserted that types, linter, and formatter run on every commit and that
+  failing code "cannot be committed." None of that is wired on a fresh repo, and the file
+  said so ten lines earlier in the stack-agnostic note — it contradicted itself on one
+  page. Now states the pending condition explicitly.
+- `definition-of-done.md` claimed high-risk work "was flagged and approved by a human
+  before building (per the stop-list)" for five areas. The stop-list covers two of them.
+  A reviewer ticking that box was certifying an approval that could not have happened.
+- *(missed by the review)* The same file's "Linter passes / Formatter passes" boxes are
+  unavailable rather than passing when no linter exists. Same defect, second location.
+- *(missed by the review)* The same file's type rule still named `any` and "ignores" —
+  TypeScript-only, after `standards.md` was made language-neutral. The identical drift
+  T1 hit, in a file nobody re-checked.
+
+**Fixed — the guard did not guard itself.** CI runs
+`scripts/check-decisions-immutable.sh` from the pull request's own branch, so a PR can
+delete a decision record and edit the script's `GUARDED` list in the same commit and pass.
+Confirmed by executing it: exit 0 with an ADR line deleted. `.github/CODEOWNERS` now covers
+`/.github/` and `/scripts/`.
+
+Worth being precise about what this was and wasn't. The review called it silent; it isn't
+— the script edit appears in the diff. It was *unblocked*, not hidden, and the fix is to
+force someone to look rather than to detect anything new. Note also that this is the
+coupling `architecture.md` already warned about ("the guard silently stops covering
+them"): the repo documented that `GUARDED` was load-bearing and then left it unprotected,
+which is a sharper failure than not knowing.
+
+CODEOWNERS carries its own footgun, called out in the file and in `docs/handoff.md`: an
+owner without write access to the repo blocks every PR touching those paths. On a template
+that gets copied, a stale handle is worse than no file.
+
+**Raised as an open question, not fixed.** The review argued that removing "add a new
+dependency" from the stop-list was wrong because a manifest diff does not expose the
+transitive tree. That engages the recorded reasoning fairly and identifies a real gap in
+it — the earlier entry leaned on "reviewed at the PR via the manifest diff," which is
+weaker than it sounded. It does not weigh the cost that split was buying: a stop-list that
+fires on routine work trains people to route around all of it. Left as a policy question
+in `docs/open-questions.md`, together with whether payments and the sync boundary belong
+on the stop-list at all.
+
+**Rejected.** The review argued the boundary-contract marker fails because "due at the
+first boundary ADR, or at handoff" is a condition rather than a date, and that an agent
+needs a date to parse. Rejected on two grounds. It does not engage the record: a
+date-based trigger is rejected in `operating-rules.md` under "When a check earns its
+place," because a check firing on elapsed time carries no information about whether
+anything needs doing and trains dismissal. And its premise is wrong about the mechanism —
+the obligation was deliberately placed in `adr/0001` so an agent meets it while writing
+the ADR, rather than by remembering to consult `architecture.md`. The underlying worry
+(an agent inventing structure) is real; a date does not address it and costs the thing
+that does. Recorded so it is not re-raised as new.
+
+---
+
 ## 2026-08-13 — Handoff is the second trigger for the boundary contract
 **Decision:** Two triggers, not one. The ADR criterion fires at the decision moment;
 handoff is the guaranteed backstop. The marker in `architecture.md` now reads "due at the
