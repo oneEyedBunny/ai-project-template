@@ -59,9 +59,18 @@ Do these in order — steps 1 and 2 depend on each other.
 2. **Require the check.** Settings → Branches → require the status check named
    "Decision records are append-only". (On a repo using rulesets rather than classic
    branch protection, this is Settings → Rules → Rulesets instead.)
-3. **Create a PR label named `amend-decision`** (Issues → Labels). It is the sanctioned
-   override for the immutability check, and using it leaves a visible mark on the PR.
-   You need it at least once per repo, to clear this template's placeholder entries.
+3. **Create a PR label named `amend-decision`.** It is the sanctioned override for the
+   immutability check, and using it leaves a visible mark on the PR. You need it at
+   least once per repo, to clear this template's placeholder entries.
+
+   ```bash
+   gh label create amend-decision --force \
+     --description "Sanctioned override for the append-only decision-records check" \
+     --color d4c5f9
+   ```
+
+   `--force` updates the label instead of erroring if it already exists, so re-running
+   setup on a partly configured repo doesn't halt here. By hand: Issues → Labels.
 4. **Create `.github/pull_request_template.md`.** Structure is the team's call, but it
    must force an explicit answer to: does this change a documented standard, and was
    that standard updated in this PR?
