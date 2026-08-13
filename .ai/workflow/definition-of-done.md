@@ -12,7 +12,9 @@ declaring anything complete; the human reviewer checks it at the pull request.
       — it's unavailable. Say so rather than ticking it; see project init in
       `docs/todo.md`.)*
 - [ ] Formatter passes (code is formatted). Same caveat as above.
-- [ ] Type-checker passes with no new escape hatches (`any`, ignores) left unexplained.
+- [ ] Type-checker passes, and every new suppression of it carries a reason — whether
+      that's a silent cast or a suppression directive. See the Types rule in
+      `.ai/engineering/standards.md`; the language-specific forms live there, not here.
 - [ ] No secrets anywhere (keys, tokens, passwords, `.env` contents).
 - [ ] No real client or user data in code, tests, fixtures, or logs.
 - [ ] A human on the team can explain, in plain English, what the code does.
