@@ -82,12 +82,17 @@ CLAUDE.md                  Entry point Claude reads first: router + the stop-lis
   workflow/
     definition-of-done.md  The completion checklist [reusable]
     review-checklist.md    Self-review + adversarial second-LLM review [reusable]
-specs/                     Feature specs (spec-kit lives here)
+specs/                     Feature specs, one folder per feature
+  _template/spec.md        Copy this to start a new spec [reusable]
 docs/
   decisions-log.md         Running record of mid-build choices
   open-questions.md        Blocked-on-a-human decisions (the translation queue)
   todo.md                  Work queue + STANDING handoff checklist
   handoff.md               How the client takes ownership (access, operability)
+scripts/
+  check-decisions-immutable.sh  CI guard: decision records are append-only [reusable]
+.github/workflows/
+  decisions-immutable.yml  Runs that guard on every PR [reusable]
 src/                       Application code
 .gitignore                 Scoped to secrets + build artifacts (NOT the .ai/ files)
 .env.example               Documents env vars without committing secrets
@@ -117,7 +122,10 @@ documented, accounts and secrets transferred, branch protection on. Reasoning in
 
 ## GitHub settings (not files — do these by hand)
 
-- **Branch protection** on `main`: Settings → Branches → require a pull request to merge.
+- **Branch protection** on `master`: Settings → Branches → require a pull request to merge.
+- **Require the "Decision records are append-only" check** on that same rule. The workflow
+  is a file and ships automatically; marking it *required* is the manual part, and it only
+  appears in the picker after it has run once. Full sequence in `docs/handoff.md`.
 - **Template repository**: Settings → check "Template repository" for the one-click
   "Use this template" button on new projects.
 
@@ -131,9 +139,9 @@ cd ai-project-template
 git init
 git add .
 git commit -m "Initial template"
-git branch -M main
+git branch -M master
 git remote add origin <your-repo-url>
-git push -u origin main
+git push -u origin master
 ```
 
 Then flip on "Template repository" in Settings.

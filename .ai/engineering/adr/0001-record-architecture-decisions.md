@@ -3,6 +3,11 @@
 > This is a template AND a working first record. Copy this format for each new decision:
 > `adr/NNNN-short-title.md`. Number them in order. Never delete an ADR — if a decision
 > is reversed, write a new ADR that supersedes it and link back.
+>
+> This directory is append-only and CI enforces it: a pull request that deletes, renames,
+> or removes a line from any ADR fails the "Decision records are append-only" check.
+> Supersede by ADDING a line to the old ADR — `**Superseded by ADR-0007**` — rather than
+> by editing its Status. See the header of `docs/decisions-log.md` for the reasoning.
 
 **Status:** Accepted
 **Date:** [YYYY-MM-DD]

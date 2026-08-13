@@ -43,8 +43,20 @@ access and operability — the things that are invisible until they're missing.
 
 ## The GitHub settings that aren't files
 
-- **Branch protection** on `main`: Settings → Branches → require a pull request before
-  merging. This enforces "nothing pushed straight to main," which written rules alone
+- **Branch protection** on `master`: Settings → Branches → require a pull request before
+  merging. This enforces "nothing pushed straight to master," which written rules alone
   can't guarantee.
 - **Template repository** (this template repo only, not client projects): Settings →
   check "Template repository" so each new client is one click via "Use this template."
+- **Required status check: "Decision records are append-only."** The workflow ships as a
+  file (`.github/workflows/decisions-immutable.yml`), but making it *block* a merge is a
+  UI setting: Settings → Branches → the `master` rule → require status checks to pass →
+  add it by name.
+
+  **Order matters here.** A check does not appear in that picker until it has run at
+  least once, so: push the workflow → open a throwaway PR so it runs → then come back
+  and mark it required. Doing it in the other order looks broken and isn't.
+
+  The escape hatch is a PR label named `amend-decision` — create it under Issues →
+  Labels. With that label on, the check reports the violation and passes anyway. You need
+  it once per repo to clear the template's placeholder entries.

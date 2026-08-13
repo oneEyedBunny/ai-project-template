@@ -26,6 +26,6 @@ declaring anything complete; the human reviewer checks it at the pull request.
 
 ## Before merge
 
-- [ ] On a branch, not `main`.
+- [ ] On a branch, not `master`.
 - [ ] Pull request opened and reviewed by a human.
 - [ ] CI is green.

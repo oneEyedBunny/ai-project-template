@@ -35,7 +35,7 @@ so if any of these don't make sense, ask why. The "why" matters more than the ru
 ## How to actually work day to day
 
 1. Pick up a task (a GitHub Issue).
-2. Make a branch. Never work directly on `main`.
+2. Make a branch off `master` (the default branch). Never work directly on `master`.
 3. Work with Claude to build it. Ask it to write tests too.
 4. Run the tests. Read the code. Understand it. Ask about anything unclear.
 5. Open a pull request. Ally reviews everything, at first.

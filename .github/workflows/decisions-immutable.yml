@@ -1,0 +1,30 @@
+name: Decisions immutable
+
+# Runs on every pull request, with no path filter. A required status check that
+# is skipped for some PRs stays pending forever and blocks the merge, so the job
+# always runs and exits early when no decision records were touched.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Decision records are append-only
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history — the script needs a merge base with the target branch.
+          fetch-depth: 0
+
+      - name: Check decision records
+        env:
+          # Taken from the PR rather than hardcoded, so this file does not need
+          # editing on a repo whose default branch is named something else.
+          BASE_REF: ${{ github.base_ref }}
+          ALLOW_DECISION_EDIT: ${{ contains(github.event.pull_request.labels.*.name, 'amend-decision') }}
+        # Invoked via `bash` rather than executed directly: Git on Windows does
+        # not reliably preserve the executable bit.
+        run: bash scripts/check-decisions-immutable.sh

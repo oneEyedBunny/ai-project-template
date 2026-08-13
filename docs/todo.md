@@ -33,7 +33,9 @@ every box before handing over. See `docs/handoff.md` for the reasoning.
 - [ ] Repo ownership transferred to the client's GitHub org (or their account)
 - [ ] Their team's access confirmed working — someone on their side has pushed or
       opened a PR successfully
-- [ ] Branch protection enabled on `main`
+- [ ] Branch protection enabled on `master`
+- [ ] "Decision records are append-only" marked as a required status check on that
+      branch rule, and the `amend-decision` label created — see `docs/handoff.md`
 - [ ] Any third-party accounts we set up (hosting, DB, APIs, domains) are in their
       name or transferred, and billing points at them
 
