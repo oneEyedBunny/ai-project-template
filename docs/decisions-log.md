@@ -1,8 +1,9 @@
 # Decisions log
 
 A running, lightweight record of choices made during the build. Not every choice —
-just the ones where someone might later ask "why did we do it that way?" that aren't
-big enough to be a full ADR.
+just the ones where someone might later ask "why did we do it that way?" For which
+choices belong here and which get an ADR instead, see the test under "Architecture
+Decision Records" in `.ai/engineering/architecture.md`.
 
 This is also part of Claude's memory across sessions: the repo remembers what the chat
 forgets. When you make a call mid-build, drop a line here.

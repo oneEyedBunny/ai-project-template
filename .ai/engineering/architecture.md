@@ -36,6 +36,9 @@
 Significant "why we chose X over Y" decisions live as individual files in `adr/`.
 Add a line here each time one is written.
 
+Use an ADR when the decision changes a module boundary, a dependency direction, or a
+public interface. Everything else goes in `docs/decisions-log.md`.
+
 - ADR-0001: [title] — see `adr/0001-*.md`
 
 <!-- EXAMPLE (delete when filling in):
