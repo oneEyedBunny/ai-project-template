@@ -18,11 +18,17 @@ as a default; set that deliberately.
 
 ---
 
-## The non-negotiable trio (enforced automatically)
+## The non-negotiable trio
 
-Types, linter, formatter run on every commit via pre-commit hooks, and again in CI.
-This is not optional and not a matter of discipline — unformatted, untyped, or
-lint-failing code cannot be committed. See the config files once the stack is chosen.
+Types, linter, formatter. Once wired, they run on every commit via pre-commit hooks and
+again in CI, and that is not a matter of discipline — unformatted, untyped, or
+lint-failing code cannot be committed.
+
+> **Not wired yet on a fresh repo, and this file cannot tell you whether yours is.**
+> The hooks and configs are generated when the stack is chosen (`docs/todo.md`, project
+> init). Until that's done, nothing above is enforced by anything — the rules still bind,
+> but the only thing applying them is you. Check for the config files rather than assuming
+> this heading means a gate exists.
 
 ---
 
