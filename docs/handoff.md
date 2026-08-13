@@ -48,15 +48,25 @@ access and operability — the things that are invisible until they're missing.
   can't guarantee.
 - **Template repository** (this template repo only, not client projects): Settings →
   check "Template repository" so each new client is one click via "Use this template."
-- **Required status check: "Decision records are append-only."** The workflow ships as a
-  file (`.github/workflows/decisions-immutable.yml`), but making it *block* a merge is a
-  UI setting: Settings → Branches → the `master` rule → require status checks to pass →
-  add it by name.
+### One-time setup for a repo created from this template
 
-  **Order matters here.** A check does not appear in that picker until it has run at
-  least once, so: push the workflow → open a throwaway PR so it runs → then come back
-  and mark it required. Doing it in the other order looks broken and isn't.
+Do these in order — steps 1 and 2 depend on each other.
 
-  The escape hatch is a PR label named `amend-decision` — create it under Issues →
-  Labels. With that label on, the check reports the violation and passes anyway. You need
-  it once per repo to clear the template's placeholder entries.
+1. **Let the check run once.** Push `.github/workflows/decisions-immutable.yml`, then
+   open a throwaway pull request so the check executes. A check that has never run does
+   not appear in the required-status-checks picker, so doing this the other way round
+   looks broken and isn't.
+2. **Require the check.** Settings → Branches → require the status check named
+   "Decision records are append-only". (On a repo using rulesets rather than classic
+   branch protection, this is Settings → Rules → Rulesets instead.)
+3. **Create a PR label named `amend-decision`** (Issues → Labels). It is the sanctioned
+   override for the immutability check, and using it leaves a visible mark on the PR.
+   You need it at least once per repo, to clear this template's placeholder entries.
+4. **Create `.github/pull_request_template.md`.** Structure is the team's call, but it
+   must force an explicit answer to: does this change a documented standard, and was
+   that standard updated in this PR?
+5. **Wire pre-commit hooks for the chosen stack.** `.ai/engineering/standards.md` states
+   that types, linter, and formatter run on every commit — until this step is done, that
+   statement is not true of the project.
+6. **Add `.github/workflows/` to `CODEOWNERS`** so enforcement cannot be weakened
+   without review.
