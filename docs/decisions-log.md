@@ -49,10 +49,24 @@ The first substantive one: **decision records are append-only, enforced in CI.**
 `docs/decisions-log.md` or `.ai/engineering/adr/`. Supersede by adding a line, never by
 editing the old text. The `amend-decision` PR label is the sanctioned override.
 
-The second: **the dependency policy split.** Adding a new package is no longer a
-stop-list item — it is reviewed at the PR via the manifest diff, weighed against the new
-selection rubric in `.ai/engineering/stack.md`. Only *upgrading* an existing package
-needs sign-off, because a version bump changes behavior in ways the diff does not show.
+The second: **the stop-list now has exactly one authoritative home.** It existed in three
+— `CLAUDE.md`, `.ai/engineering/how-we-work-with-ai.md`, and `.ai/persona.md` — and the
+three had already diverged, within a single editing session. Now:
+
+- `CLAUDE.md` is authoritative.
+- `how-we-work-with-ai.md` keeps a plain-language copy, explicitly marked as *not*
+  authoritative. It is a standalone onboarding doc for teammates new to AI coding, who
+  are told to read it first; a bare pointer would send them into a file addressed to
+  Claude. The copy is deliberate, and its risk is recorded in `docs/open-questions.md`.
+- `persona.md` no longer enumerates the list at all. It describes the shape the items
+  share, so there is nothing in it that can contradict `CLAUDE.md`.
+
+What exposed the divergence was a smaller change: **the dependency policy split.** Adding
+a new package is no longer a stop-list item — it is reviewed at the PR via the manifest
+diff, weighed against the new selection rubric in `.ai/engineering/stack.md`. Only
+*upgrading* an existing package needs sign-off, because a version bump changes behavior
+in ways the diff does not show. Editing one copy of the stop-list made the other two
+wrong, which is how the three-way duplication surfaced.
 
 The rest: a concrete ADR-vs-log test (module boundary, dependency direction, or public
 interface → ADR), a stated duplication convention (repeat across layers, never within a
@@ -65,10 +79,15 @@ stated as a vague judgment call about how weighty a decision feels is re-judged 
 time. Both were present. Enforcement that lives in CI rather than in prose is the part
 that cannot be forgotten.
 
+The stop-list is the highest-stakes list in the repo. Three copies meant three chances to
+be wrong about when to stop, and the wrong copy is the one someone happens to read.
+
 **Alternatives considered:** Leaving the append-only rule as prose only — rejected, it is
 exactly the kind of rule that erodes silently. Blocking new dependencies as well as
 upgrades — rejected, it made the stop-list fire constantly for routine work, which trains
-people to route around the whole list.
+people to route around the whole list. Collapsing the `how-we-work-with-ai.md` copy into a
+pointer — rejected on audience grounds, see above; that file's whole premise is that you
+can read it and nothing else.
 
 ---
 

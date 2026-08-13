@@ -14,25 +14,26 @@ Format: open items at the top, grouped loosely by urgency.
 
 ## Open
 
-### Two files still say a new dependency needs sign-off — fix them, or was T1 wrong?
-**Context:** T1 changed the `CLAUDE.md` stop-list so only *upgrades* need sign-off, with
-new packages reviewed at the PR. The grep T1 asked for found two places that still say
-the opposite, so the repo now contradicts itself:
-- `.ai/engineering/how-we-work-with-ai.md:27` — its stop-list (explicitly "also in
-  CLAUDE.md") lists "Adding a new dependency / library — each one is new risk; we decide
-  together."
-- `.ai/persona.md:38` — summarizes the stop-list as "auth, schema changes, new
-  dependencies, real user data, and anything secret."
+### What keeps the two stop-list copies in sync?
+**Context:** `CLAUDE.md` is authoritative; `.ai/engineering/how-we-work-with-ai.md` keeps
+a plain-language copy for teammates new to AI coding, marked as non-authoritative. That
+copy is deliberate — that file is standalone onboarding and a pointer would send a
+beginner into a document addressed to Claude — but it is still a second copy of the
+highest-stakes list in the repo. It already drifted once, within one editing session,
+which is what surfaced it.
 
-Not a contradiction, no action needed: `.ai/engineering/patterns.md:23` lists
-"introducing a new dependency to solve something the stack already handles" as an
-anti-pattern. That is about redundancy, not about who signs off.
+Marking one copy authoritative resolves *which* is right. It does nothing to make anyone
+notice when they disagree. The append-only records got a CI check for exactly this class
+of problem; this has prose only.
 
-**Options as I see them:** (a) update both files to match the new policy — mechanical,
-and the one that makes T1's "done when" actually true; (b) revert T1 and keep new
-dependencies on the stop-list; (c) leave the split deliberately and say why.
-**Who needs to decide:** Ally. T1 said to report rather than fix silently, so both files
-are untouched.
+**Options as I see them:** (a) a CI check that fails when the stop-list item count or
+headings diverge between the two files — cheap, catches structural drift, misses reworded
+reasons; (b) put the canonical list in one file and generate the plain-language copy from
+it at build time — no drift possible, but adds a build step to a docs-only repo; (c)
+accept it, and add "re-read both stop-lists" to the handoff checklist — honest, weakest;
+(d) accept it silently, on the grounds that the list changes about once a year.
+**Who needs to decide:** Ally. Not blocking anything — raised because the same reasoning
+that justified the immutability check applies here and reached a different answer.
 **Raised:** 2026-08-13
 
 ### [Question — one line]
