@@ -25,8 +25,8 @@ again in CI, and that is not a matter of discipline — unformatted, untyped, or
 lint-failing code cannot be committed.
 
 > **Not wired yet on a fresh repo, and this file cannot tell you whether yours is.**
-> The hooks and configs are generated when the stack is chosen (`docs/todo.md`, project
-> init). Until that's done, nothing above is enforced by anything — the rules still bind,
+> The hooks and configs are generated when the stack is chosen — `docs/setup.md`.
+> Until that's done, nothing above is enforced by anything — the rules still bind,
 > but the only thing applying them is you. Check for the config files rather than assuming
 > this heading means a gate exists.
 

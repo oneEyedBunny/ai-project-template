@@ -121,7 +121,7 @@ without disturbing the settled ones:
 - **Enforcement**: active today — gitignore, and CI enforcing that decision records are
   append-only. Pending a stack choice — linter, formatter, type-checker, pre-commit
   hooks, and test CI. `.ai/engineering/standards.md` describes rules in both groups, so
-  check `docs/todo.md` (project init) for which are actually wired.
+  check `docs/setup.md` for which are actually wired on this repo.
 
 ## Client handoff
 
