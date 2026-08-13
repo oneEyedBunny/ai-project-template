@@ -90,6 +90,23 @@ guarantees that *not* writing it is a recorded choice by the time the repo leave
 hands. Given every check available here is structural rather than semantic, that is the
 honest maximum — consistent with the ceiling already stated in `operating-rules.md`.
 
+**Recorded limitation, no action.** Both triggers assume a delivery event. A long-running
+internal repo has neither: no handoff, and an ADR criterion that still depends on someone
+recognizing a boundary. The gap is real, but it sits outside the case this template was
+built for, so the fix belongs to whoever adapts the template for internal use rather than
+here. The marker reading "or at handoff" is what makes that inherited assumption visible —
+depending on it silently would be worse.
+
+Two things that keep this cheap, recorded so they don't have to be re-derived. First, a
+long-running internal project is the case where the ADR criterion is *most* likely to fire
+on its own: more decisions accumulate, so more chances to cross a boundary threshold. The
+missing backstop matters less there than the bare gap suggests. Second, that leaves the
+both-triggers-silent scenario as a *small* internal project — which is also the scenario
+where a contract matters least. Same shape as the split at the top of this entry: a marker
+sitting indefinitely on a project that made no boundary decisions is accurate, not stale.
+The gap is concentrated where its cost is close to zero, which is why no further mechanism
+is the right answer rather than merely an affordable one.
+
 ---
 
 ## 2026-08-13 — Standards are stack-agnostic; boundary contract splits by kind
