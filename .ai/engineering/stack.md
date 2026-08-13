@@ -8,6 +8,40 @@
 > get generated to match — those are the "automated guardrails" and they can't be
 > generic. Ask Claude to generate them once the stack is settled.
 
+## Enforcement — which tool owns which rule
+
+`standards.md` states the invariants and deliberately holds no rule names and no enforced
+numbers. This table is where they land. Fill it in when the stack is chosen; it doubles as
+the spec for generating the config files.
+
+| Invariant (from `standards.md`) | Tool + rule | Configured in |
+| --- | --- | --- |
+| Function length | | |
+| Nesting depth | | |
+| Type suppression carries a reason | | |
+| **Client/server seam — security** (`architecture.md`) | | |
+| Structural boundary contract (`architecture.md`) | | |
+| Formatting | | |
+| Types | | |
+
+**The seam row is the one to fill in first, and it is unenforced until you do.** The seam
+is declared at init because it's knowable then, but declaring it is prose — nothing stops
+an import until a tool does. That leaves a window where the only security-relevant
+boundary in the repo is guarded by a sentence. That window is probably unavoidable, since
+the enforcer depends on the stack. It should be *conspicuous* rather than assumed covered,
+which is what this row is for: leave it visibly blank, don't quietly skip it.
+
+**The two right-hand columns do not deserve equal trust, and it matters which is which.**
+
+*Configured in* is a path. It exists or it doesn't, so it's checkable by anything that
+validates file references — the same class of check as link-checking, and it should be
+covered by that rather than by something bespoke.
+
+*Tool + rule* is not checkable without invoking the linter. It stays convention: this
+column can name a rule that was renamed, deprecated, or switched off months ago, and
+nothing will say so. Treat it as a lead — confirm against the config file before relying
+on it, and never quote a number from here, because numbers don't live here.
+
 ## How a tool gets chosen
 
 Evaluate against these before committing to anything. Record the result in the entry

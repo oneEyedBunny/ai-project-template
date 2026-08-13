@@ -8,6 +8,17 @@ here (those live in `open-questions.md`).
 > Keep this file only as a simple starting point, OR keep it just for the standing
 > handoff checklist below, which doesn't map cleanly to a feature issue.
 
+## Project init (do these once, when the stack is chosen)
+
+- [ ] Declare the client/server seam in `.ai/engineering/architecture.md` — this one is
+      not deferrable; see the note there
+- [ ] Fill in the enforcement table in `.ai/engineering/stack.md`, then generate the
+      config files from it
+- [ ] Rewrite the `standards.md` examples in the project's language, or confirm the
+      project is TypeScript and leave them
+- [ ] Decide whether `persona.md` / `standards.md` / `patterns.md` are this client's
+      deliverable (record in `.ai/client/constraints.md` — see `docs/handoff.md`)
+
 ## In progress
 
 ## Up next

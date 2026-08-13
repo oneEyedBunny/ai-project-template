@@ -4,8 +4,17 @@ How code must be written on this project. Be prescriptive, not aspirational — 
 code" means nothing; concrete rules with examples mean something. Claude pattern-matches
 on examples better than on rules, so this file leans on good/bad pairs.
 
-Most of this is reusable across clients. The stack-specific parts (which linter, which
-formatter) live in `stack.md` and in the config files at the repo root.
+Most of this is reusable across clients. The stack-specific parts live elsewhere, in
+three layers:
+
+- **Here:** the invariant, in prose, plus an example. No rule names, no enforced numbers.
+- **`stack.md`:** which tool enforces it, and where that tool is configured.
+- **The config file:** the number, the severity, the actual gate.
+
+A number that appears in this file is *indicative* — something to calibrate against
+during the window before a linter exists, which on a new project is exactly when the
+first feature gets written. It is never the enforced value. Don't copy it into a config
+as a default; set that deliberately.
 
 ---
 
@@ -20,7 +29,9 @@ lint-failing code cannot be committed. See the config files once the stack is ch
 ## Functions and structure
 
 - Functions do one thing. If you're describing it with "and", split it.
-- Keep functions short. If one grows past ~30 lines, that's a smell — look for a split.
+- Keep functions short. Past roughly 30 lines, go looking for a split. That number is a
+  smell threshold, not a limit — see the note at the top. If there is no linter config
+  yet, there is no enforced limit; do not infer one from this line.
 - No deeply nested conditionals. Prefer early returns over nested `if`.
 - No nested ternaries. One ternary is fine; a ternary inside a ternary is not.
 
@@ -40,8 +51,17 @@ lint-failing code cannot be committed. See the config files once the stack is ch
 
 ## Types
 
-- No escape hatches (`any`, `@ts-ignore`, equivalent) without a comment explaining why
-  and, ideally, a linked open question.
+- **Never suppress the type system without recording why.** Two different things count,
+  and it's worth knowing they're different:
+  - a **silent cast** that widens or discards a type and leaves no trace the tooling can
+    find later — `as any`, `cast(Any, x)`, an untyped escape into a dynamic value;
+  - a **suppression directive**, which is a comment the checker can be told to police —
+    `@ts-expect-error`, `# type: ignore[arg-type]`.
+
+  Both need a comment giving the reason, and a linked open question when the honest reason
+  is "we don't know yet." Prefer the directive over the silent cast where the language
+  offers both: a directive can be required to name the error it suppresses, and flagged
+  once it stops being necessary. A cast can't be — it looks like ordinary code forever.
 - Validate external data at the boundary (network, storage, URL params) and give it a
   real type from that point inward. Don't trust the shape of anything from outside.
 
@@ -60,7 +80,15 @@ lint-failing code cannot be committed. See the config files once the stack is ch
 
 ---
 
-## Good vs bad
+## Good vs bad — examples are in TypeScript
+
+The language is named in this heading on purpose. Concrete examples teach better than
+pseudocode, so these stay concrete — but if this project isn't TypeScript, they show the
+*rule*, not the syntax, and you should not pattern-match the code style from them.
+
+Rewriting them in the project's language is an init task (see `docs/todo.md`). It is also
+the init task most likely to get skipped, so until it's done, treat the heading as the
+warning it is.
 
 **Naming and early return**
 
