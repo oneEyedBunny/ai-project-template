@@ -1,11 +1,14 @@
 # Code owners — review required on the files that do the enforcing.
 #
 # WHY THIS EXISTS
-# The append-only guard reads its own GUARDED list from
-# scripts/check-decisions-immutable.sh, and CI runs that script from the pull request's
-# own branch. So a PR can delete a decision record and, in the same commit, edit the
-# script so the check no longer looks at it — and the check passes. That edit is visible
-# in the diff, but nothing forces anyone to look at it. This file forces the look.
+# The workflow runs the check script from the BASE branch, so editing that script inside
+# a pull request no longer blinds the check that gates it. What no workflow can defend
+# against is an edit to itself: for pull_request events GitHub runs the workflow file
+# from the PR branch, so a PR that guts the job body while keeping the job name
+# "Decision records are append-only" still reports success to a required status check.
+#
+# That is the remaining hole and it is what this file is for. It cannot be closed by a
+# check — only by someone looking at the diff.
 #
 # READ THIS BEFORE USING THE TEMPLATE ON A CLIENT REPO
 # Replace @oneEyedBunny below with a handle that has write access to THAT repo. A

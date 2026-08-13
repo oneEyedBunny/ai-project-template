@@ -104,7 +104,9 @@ Do these in order — steps 1 and 2 depend on each other.
    off and accept that the gap below stays open; turn it on the moment there is a second
    person who can approve.
 
-   What it closes: CI runs `scripts/check-decisions-immutable.sh` from the pull request's
-   own branch, so a PR can delete a decision record and edit the script's `GUARDED` list
-   in the same commit, and the check passes. The edit shows in the diff; this makes
-   someone look at it.
+   What it closes: the workflow runs the check script from the base branch, so editing
+   that script inside a PR can no longer blind the check gating it. But for
+   `pull_request` events GitHub runs the *workflow file* from the PR branch — so a pull
+   request that guts the job body while keeping the job name still reports success to the
+   required status check. No workflow can defend against edits to itself. That is the
+   remaining hole, and only a human reading the diff closes it.

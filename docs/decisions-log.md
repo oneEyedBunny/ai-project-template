@@ -39,6 +39,46 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — The guard runs from the base branch, not from the pull request
+**Decision:** `.github/workflows/decisions-immutable.yml` now reads
+`scripts/check-decisions-immutable.sh` out of `origin/$BASE_REF` and runs that copy,
+instead of running the copy in the checked-out pull request.
+
+**Why.** The adversarial review's top finding: CI ran the script from the PR's own branch,
+so one commit could delete a decision record *and* comment out `.ai/engineering/adr` from
+the script's `GUARDED` list, and the check would inspect itself after being blinded and
+pass. Verified by executing it, before and after — the same attack passes against the old
+workflow and fails against the new one. The PR's content is still what gets inspected;
+only the inspector is pinned to a branch the PR cannot edit. A legitimate change to the
+script takes effect once merged, which is the correct order.
+
+**This replaces CODEOWNERS as the primary mitigation, and CODEOWNERS stays for the
+remainder.** Three attacks, three outcomes now:
+
+- Edit `GUARDED` and delete a record in one PR → blocked by this change.
+- Delete or rename the workflow so it never runs → blocked by the required status check,
+  which never reports and leaves the PR pending. This is why the workflow carries no path
+  filter.
+- Gut the workflow body while keeping the job name → **still passes.** For
+  `pull_request` events GitHub runs the workflow file from the PR branch, so no workflow
+  can defend against edits to itself.
+
+That last one is the honest residual and it cannot be closed by a check. Closing it needs
+either a second identity so code-owner review actually functions, or a ruleset rule
+restricting changes to `.github/workflows/**`. Both are open; neither is done.
+
+**Why not just do code-owner review now.** It requires an approval from a code owner who
+is not the PR author. This repo has one account, so every pull request would be
+unapprovable and would clear via admin bypass instead — a control bypassed every time,
+which `operating-rules.md` argues is worse than none. Recorded so this is not mistaken for
+an oversight.
+
+**What it cost:** the failure mode moved from "one plausible-looking edit defeats it" to
+"you must gut a workflow while preserving its job name," which cannot be dressed up as a
+refactor in a diff. One line of workflow, no second human.
+
+---
+
 ## 2026-08-13 — Stop-list gains money and sync conflicts; dependency gate stays put
 **Decision:** Both policy questions left open by the adversarial review are now settled.
 
