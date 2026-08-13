@@ -26,14 +26,22 @@ have to read a file written for the AI.
 Never let the AI do these on its own. Bring them to Ally first. Each has a reason:
 
 1. **Auth / login code** — get it wrong and everyone's account is exposed.
-2. **Database schema changes / migrations** — a wrong one can permanently lose the
+2. **Anything that moves money** — charges, refunds, payouts, working out what someone
+   gets billed. A mistake here takes real money off a real person, and getting it back
+   is slow and embarrassing. Building screens *around* payments is fine; changing what
+   charges whom is not.
+3. **Database schema changes / migrations** — a wrong one can permanently lose the
    client's data, and it's hard to undo.
-3. **Upgrading a library we already use** — a version bump can change how it behaves in
+4. **Deciding what wins when offline changes collide** — two people edit the same thing,
+   or a phone comes back online with stale edits. The rule for who wins is a stop; the
+   ordinary feature work around it isn't. Get this wrong and data disappears quietly,
+   with nothing to restore from.
+5. **Upgrading a library we already use** — a version bump can change how it behaves in
    ways the diff doesn't show. Adding a *brand-new* library isn't on this list: propose
    it in the pull request and say why you picked that one.
-4. **Real client or user data** — never paste it into the AI, into tests, or into logs.
+6. **Real client or user data** — never paste it into the AI, into tests, or into logs.
    Use fake data.
-5. **Anything secret** — API keys, passwords. These never go into the code or the chat.
+7. **Anything secret** — API keys, passwords. These never go into the code or the chat.
 
 Rules you understand are rules you'll follow. Rules you don't, you'll route around —
 so if any of these don't make sense, ask why. The "why" matters more than the rule.

@@ -29,10 +29,12 @@ Two different gates apply here, and they cover different lists. Don't conflate t
 - [ ] A second LLM did an adversarial review. This applies to **every** area named above —
       see `review-checklist.md`.
 - [ ] **If, and only if, the change is on the stop-list in `CLAUDE.md`** — it was flagged
-      and approved by a human *before* building. The stop-list is narrower than this
-      heading: it covers auth and migrations, not payments, data integrity, or sync.
-      Don't tick this for something the stop-list doesn't actually cover; an untrue tick
-      certifies an approval that never happened.
+      and approved by a human *before* building. The stop-list is scoped more tightly
+      than this heading. It covers auth, money movement, migrations, and the rule for how
+      sync conflicts resolve — but not "data integrity" as a general category, and not
+      ordinary feature work that merely happens to sync. Check the list rather than
+      inferring from this heading; an untrue tick certifies an approval that never
+      happened.
 - [ ] The offline/sync behavior is explicit and tested, if relevant.
 
 ## Before merge
