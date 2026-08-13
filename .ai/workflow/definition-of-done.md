@@ -20,8 +20,15 @@ declaring anything complete; the human reviewer checks it at the pull request.
 
 ## If it touches a high-risk area (auth, payments, data integrity, migrations, sync)
 
-- [ ] It was flagged and approved by a human before building (per the stop-list).
-- [ ] A second LLM did an adversarial review (see `review-checklist.md`).
+Two different gates apply here, and they cover different lists. Don't conflate them.
+
+- [ ] A second LLM did an adversarial review. This applies to **every** area named above —
+      see `review-checklist.md`.
+- [ ] **If, and only if, the change is on the stop-list in `CLAUDE.md`** — it was flagged
+      and approved by a human *before* building. The stop-list is narrower than this
+      heading: it covers auth and migrations, not payments, data integrity, or sync.
+      Don't tick this for something the stop-list doesn't actually cover; an untrue tick
+      certifies an approval that never happened.
 - [ ] The offline/sync behavior is explicit and tested, if relevant.
 
 ## Before merge
