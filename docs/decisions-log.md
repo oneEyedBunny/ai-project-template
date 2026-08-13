@@ -39,6 +39,47 @@ the placeholders below — put the `amend-decision` label on the PR.
 
 ---
 
+## 2026-08-13 — Stop-list co-change check: designed, deferred
+**Decision:** Don't build a sync guard for the two stop-list copies yet. The design below
+is settled. The trigger to build it is the next edit to the stop-list in either file.
+
+**The design.** A co-change check: fail the pull request when the diff touches the
+stop-list in `CLAUDE.md` and does *not* touch the stop-list in
+`.ai/engineering/how-we-work-with-ai.md`. It does not verify that the two agree — nothing
+at this price can; see "What an automated check can actually do" in
+`.ai/operating-rules.md`. It removes "I didn't realize the other copy existed" as an
+available excuse, which is the same job the `amend-decision` label does for decision
+records.
+
+Scoping needs sentinels — a pair of HTML comment markers around the stop-list in both
+files, with the check asking whether any changed line falls between them. Whole-file
+co-change would fire on every edit to `CLAUDE.md`, a small router file that gets touched
+often, and a check that mostly cries wolf trains people to satisfy it reflexively. The
+cost is two markers that have to stay in place.
+
+Known hole, accepted: a token edit inside the sentinels satisfies the check and looks like
+ordinary work in the diff. That is slightly worse than the `amend-decision` hole, where
+the override is a named artifact a reviewer can interrogate.
+
+**Why defer.** Both copies are aligned as of this entry, and the list changes roughly once
+a year. A guard built today sits idle until the next edit, and idle enforcement is exactly
+where sentinel markers rot — someone reformats a file, the markers go with it, and the
+check silently stops covering anything. Building it at the moment of the next stop-list
+edit puts the guard and its first real use in the same pull request.
+
+**Alternatives considered:** Generating the plain-language copy from the canonical list —
+rejected: a build step is a permanent tax on a docs repo, and generated beginner prose
+reads like generated prose. Checking item count and a per-item slug across both files —
+rejected, and this is the instructive one: the only drift we have a specimen of (the
+dependency policy, same day) kept five items with identical identities and changed one
+item's *scope*. A slug check passes it clean. Reaching for identity because identity is
+cheap to check, then reasoning about drift in terms of what that check can see, is how you
+end up guarding the wrong thing. Accepting the risk with no guard at all — defensible,
+since the failure mode is over-caution rather than danger, but a teammate waved through a
+stop once will start guessing about the rest.
+
+---
+
 ## 2026-08-13 — Drift-hardening pass on the template docs
 **Decision:** Eight changes aimed at rules that drift because they are stated twice, or
 stated too vaguely to apply the same way twice. Two are substantive; the rest are
