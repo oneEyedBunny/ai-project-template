@@ -97,7 +97,7 @@ tasks/                     Plan + task list for the feature in flight, written b
 docs/
   decisions-log.md         Running record of mid-build choices
   open-questions.md        Blocked-on-a-human decisions (the translation queue)
-  todo.md                  Work queue + STANDING handoff checklist
+  checklists.md            Project-init list + STANDING handoff checklist
   setup.md                 Day-one GitHub settings that turn the guardrails on
   handoff.md               How the client takes ownership (access, operability)
 scripts/
@@ -119,7 +119,7 @@ without disturbing the settled ones:
 
 - **Reusable** (teal): persona, operating rules, standards, review workflow — set once.
 - **Per client** (fill in): client context, glossary, constraints, stack.
-- **Living state**: decisions log, open questions, todo — updated every session.
+- **Living state**: decisions log, open questions — updated every session.
 - **Enforcement**: active today — gitignore, and CI enforcing that decision records are
   append-only. Pending a stack choice — linter, formatter, type-checker, pre-commit
   hooks, and test CI. `.ai/engineering/standards.md` describes rules in both groups, so
@@ -135,7 +135,7 @@ That makes the risk **abandonment**, not exposure: a client who owns a repo they
 actually run. So handoff is about access and operability — README that works, env vars
 documented, accounts and secrets transferred, branch protection on. Reasoning in
 `docs/handoff.md`; the checklist that can't be skipped is standing at the bottom of
-`docs/todo.md`.
+`docs/checklists.md`.
 
 ## GitHub settings (not files — do these by hand)
 

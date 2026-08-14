@@ -1,16 +1,12 @@
-# Todo
+# Checklists
 
-Decided-but-not-yet-built work. This is the *execution* queue — no decisions pending
-here (those live in `open-questions.md`).
+Two lists that outlive any one feature: what to do once at the start of a project, and
+what has to be true before handing it to the client.
 
-Not to be confused with `tasks/todo.md`, which the `spec-driven-development` skill writes
-for whichever feature is in flight and replaces on the next one. This file is durable: the
-standing queue, and the handoff checklist at the bottom.
-
-> Recommendation: once the team is comfortable, move this to GitHub Issues. Issues are
-> shared, link to pull requests, and fit the branch-per-task workflow better than a file.
-> Keep this file only as a simple starting point, OR keep it just for the standing
-> handoff checklist below, which doesn't map cleanly to a feature issue.
+Neither is a work queue. Feature work goes in GitHub Issues, and the task breakdown for
+whatever is in flight is `tasks/todo.md`, written by the `spec-driven-development` skill
+and replaced each feature. These lists are here because they are durable and would be
+destroyed by that.
 
 ## Project init (do these once, when the stack is chosen)
 
@@ -25,12 +21,6 @@ this list doesn't repeat it.
       project is TypeScript and leave them
 - [ ] Decide whether `persona.md` / `standards.md` / `patterns.md` are this client's
       deliverable (record in `.ai/client/constraints.md` — see `docs/handoff.md`)
-
-## In progress
-
-## Up next
-
-## Backlog
 
 ---
 

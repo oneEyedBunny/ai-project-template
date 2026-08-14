@@ -25,10 +25,6 @@ the skill writes the same two paths every time, so starting the next feature rep
 them. That's the right shape for a scratch plan and the wrong shape for a record, which
 is why they don't belong beside the spec.
 
-Don't confuse `tasks/todo.md` with `docs/todo.md`. Same basename, unrelated jobs: this
-one is the current feature's task breakdown and is disposable, that one is the standing
-work queue and the handoff checklist.
-
 ## How the layers compose
 
 - `specs/` — the **what** and the **why** for one feature.

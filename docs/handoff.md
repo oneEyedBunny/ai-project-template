@@ -42,8 +42,8 @@ Keep these current as you go:
 ## What transferring ownership breaks
 
 Handing the repo to the client's GitHub org is not a no-op for the settings in
-`docs/setup.md`. The matching item in `docs/todo.md` is a *verification*, not a repeat of
-setup — the two look identical and are not.
+`docs/setup.md`. The matching item in `docs/checklists.md` is a *verification*, not a
+repeat of setup — the two look identical and are not.
 
 - **`CODEOWNERS` breaks by definition.** The handle in `.github/CODEOWNERS` is ours, and
   once the repo belongs to the client's org that account may have no write access there —
@@ -61,5 +61,5 @@ before delivering, not after.
 
 ## Final handoff
 
-Work the checklist at the bottom of `docs/todo.md`. It's short, and it's mostly about
-access and operability — the things that are invisible until they're missing.
+Work the checklist at the bottom of `docs/checklists.md`. It's short, and it's mostly
+about access and operability — the things that are invisible until they're missing.
