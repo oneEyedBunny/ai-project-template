@@ -7,25 +7,27 @@ specs/
   _template/spec.md        Copy this to start a new one
   001-feature-name/
     spec.md                Required. The what and the why.
-    plan.md                From spec-driven-development. The technical approach.
-    tasks.md               From spec-driven-development. The breakdown.
     notes.md               Optional. Scratch, sketches, links.
 ```
 
-`spec.md` is the only required file you write by hand. `plan.md` and `tasks.md` come out
-of the `spec-driven-development` skill, which turns an agreed spec into a technical plan
-and then into tasks sized to land in one session. `incremental-implementation` executes
-them, slicing riskiest-first and re-cutting the list when an early slice proves it wrong.
+`spec.md` is the only required file. From there the `spec-driven-development` skill
+writes a technical plan and a task breakdown, sized so each task lands in one session.
+`incremental-implementation` executes them, slicing riskiest-first and re-cutting the
+list when an early slice proves it wrong.
 
 So the breakdown *is* written before the work — but it's a starting point, not a
 contract. Expect it to change by the second slice; that's the incremental skill doing its
 job, not the plan having failed.
 
-**Where those files go, because the skill defaults elsewhere.** Its convention is
-`tasks/plan.md` and `tasks/todo.md` at the repo root. Here they live in the feature's own
-folder, named as above. Two reasons: one feature stays one folder, and a root
-`tasks/todo.md` would sit next to `docs/todo.md` — the cross-feature work queue and
-handoff checklist — which are different things that would be read as the same one.
+**The plan and task list live at `tasks/plan.md` and `tasks/todo.md`**, the skill's own
+convention, not in the feature folder. They're working state for whatever is in flight —
+the skill writes the same two paths every time, so starting the next feature replaces
+them. That's the right shape for a scratch plan and the wrong shape for a record, which
+is why they don't belong beside the spec.
+
+Don't confuse `tasks/todo.md` with `docs/todo.md`. Same basename, unrelated jobs: this
+one is the current feature's task breakdown and is disposable, that one is the standing
+work queue and the handoff checklist.
 
 ## How the layers compose
 

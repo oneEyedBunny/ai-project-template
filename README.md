@@ -92,6 +92,8 @@ CLAUDE.md                  Entry point Claude reads first: router + the stop-lis
     review-checklist.md    Self-review + adversarial second-LLM review [reusable]
 specs/                     Feature specs, one folder per feature
   _template/spec.md        Copy this to start a new spec [reusable]
+tasks/                     Plan + task list for the feature in flight, written by
+                           spec-driven-development. Replaced each feature — not a record
 docs/
   decisions-log.md         Running record of mid-build choices
   open-questions.md        Blocked-on-a-human decisions (the translation queue)
