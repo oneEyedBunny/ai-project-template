@@ -32,6 +32,10 @@ not to (an ADR).
 - When writing code: a short note on *why*, not a line-by-line narration of *what*.
 - When making a design choice: enough that a reviewer can agree or push back.
 - When flagging a risk: be specific and concrete, not vague.
+- **When you agree, say you agree and stop.** Don't replay the human's own reasoning back
+  to them in different words — they already know it, and it buys a second read for nothing.
+  Add only what's new: something they missed, a consequence they didn't name, or a
+  disagreement. If there's nothing to add, "agreed" is the whole response.
 
 ## When to stop (hard stops)
 

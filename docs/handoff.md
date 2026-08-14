@@ -8,6 +8,9 @@ We build with AI and we say so. The `.ai/` context files are part of the deliver
 they're how a future maintainer (human or AI) picks this codebase up without re-deriving
 every decision.
 
+> **Looking for the GitHub settings to turn on?** Those are day-one work, not handoff
+> work — `docs/setup.md`. What's below is the delivery end: confirming they survived.
+
 ## The bar
 
 Handoff is done when someone who has never seen this project can clone it, run it, deploy
@@ -36,77 +39,27 @@ Keep these current as you go:
 - `docs/decisions-log.md` — the *why* behind non-obvious choices, written when you make
   them, not reconstructed later.
 
+## What transferring ownership breaks
+
+Handing the repo to the client's GitHub org is not a no-op for the settings in
+`docs/setup.md`. The matching item in `docs/checklists.md` is a *verification*, not a
+repeat of setup — the two look identical and are not.
+
+- **`CODEOWNERS` breaks by definition.** The handle in `.github/CODEOWNERS` is ours, and
+  once the repo belongs to the client's org that account may have no write access there —
+  which makes every pull request touching `/.github/` and `/scripts/` unapprovable, with
+  an error that does not explain itself. Repoint it at someone on their side who can
+  approve, or delete the file. Leaving our handle in it is the worst of the three.
+- **Branch protection, the required status check, and the label:** open the settings after
+  the transfer and confirm each is still in force. Don't infer it from having set it once.
+  Availability can depend on the owning org's plan rather than on the repo, so a rule that
+  worked for us may arrive inert — check rather than assume, in either direction.
+
+If any of the setup steps were never done at all, the repo has been running without them,
+and the files that assert enforcement have been wrong for the whole project. Fix that
+before delivering, not after.
+
 ## Final handoff
 
-Work the checklist at the bottom of `docs/todo.md`. It's short, and it's mostly about
-access and operability — the things that are invisible until they're missing.
-
-## The GitHub settings that aren't files
-
-> **Two places do this, and picking the wrong one wastes an afternoon.** GitHub has
-> *rulesets* (Settings → **Rules → Rulesets**) and older *branch protection*
-> (Settings → **Branches**). A repo normally uses one or the other, and the page for the
-> one you aren't using is simply empty — which reads as "this feature is broken," not
-> "wrong page." Check which you have first; the paths below name both.
-
-- **Protect `master`**: require a pull request before merging. This enforces "nothing
-  pushed straight to master," which written rules alone can't guarantee.
-  Rulesets → add a rule targeting `master` → Require a pull request before merging.
-  Branch protection → add a rule for `master` → same option.
-- **Template repository** (this template repo only, not client projects): Settings →
-  check "Template repository" so each new client is one click via "Use this template."
-### One-time setup for a repo created from this template
-
-Do these in order — steps 1 and 2 depend on each other.
-
-1. **Let the check run once.** Push `.github/workflows/decisions-immutable.yml`, then
-   open a throwaway pull request so the check executes. A check that has never run does
-   not appear in the required-status-checks picker, so doing this the other way round
-   looks broken and isn't.
-2. **Require the check.** Turn on "Require status checks to pass" and add the check named
-   **"Decision records are append-only"**.
-   Rulesets → your `master` ruleset → Require status checks to pass.
-   Branch protection → the `master` rule → same option.
-3. **Create a PR label named `amend-decision`.** It is the sanctioned override for the
-   immutability check, and using it leaves a visible mark on the PR. You need it at
-   least once per repo, to clear this template's placeholder entries.
-
-   ```bash
-   gh label create amend-decision --force \
-     --description "Sanctioned override for the append-only decision-records check" \
-     --color d4c5f9
-   ```
-
-   `--force` updates the label instead of erroring if it already exists, so re-running
-   setup on a partly configured repo doesn't halt here. By hand: Issues → Labels.
-4. **Create `.github/pull_request_template.md`.** Structure is the team's call, but it
-   must force an explicit answer to: does this change a documented standard, and was
-   that standard updated in this PR?
-5. **Wire pre-commit hooks for the chosen stack.** `.ai/engineering/standards.md` states
-   that types, linter, and formatter run on every commit — until this step is done, that
-   statement is not true of the project.
-6. **Point `CODEOWNERS` at a real reviewer, and require code-owner review.** The file
-   ships at `.github/CODEOWNERS` covering `/.github/` and `/scripts/` — the paths that
-   contain the enforcement itself. Two things have to happen or it does nothing:
-
-   - **Replace the handle** with someone who has write access to *this* repo. An owner
-     without access can't approve, so every PR touching those paths blocks with an
-     unhelpful error. A wrong handle is worse than no file.
-   - **Turn it on:** require review from Code Owners — Rulesets → your `master` ruleset →
-     the pull request rule, or Branch protection → the `master` rule. Without this,
-     `CODEOWNERS` is advisory and the gap it closes stays open.
-
-   **Skip this step on a one-person repo.** Code-owner review requires an approval from a
-   code owner *other than the PR author*. If the only code owner is the only developer,
-   every pull request touching these paths becomes unapprovable and gets cleared with an
-   admin bypass instead. A control bypassed every time is worse than no control — it
-   trains you past the bypass prompt for the cases that matter. On a solo repo, leave it
-   off and accept that the gap below stays open; turn it on the moment there is a second
-   person who can approve.
-
-   What it closes: the workflow runs the check script from the base branch, so editing
-   that script inside a PR can no longer blind the check gating it. But for
-   `pull_request` events GitHub runs the *workflow file* from the PR branch — so a pull
-   request that guts the job body while keeping the job name still reports success to the
-   required status check. No workflow can defend against edits to itself. That is the
-   remaining hole, and only a human reading the diff closes it.
+Work the checklist at the bottom of `docs/checklists.md`. It's short, and it's mostly
+about access and operability — the things that are invisible until they're missing.

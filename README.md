@@ -10,12 +10,13 @@ so each new project is one click). This project uses a combo of custom built fil
 It carries the things that are specific to *us and this client*: the operating
 persona and stop-list, the client context and domain glossary, our engineering
 standards, our patterns, the handoff process. No general-purpose tool can supply
-these, because they're ours. We lean on our own `specs/` folder and glossary for the spec-driven-development (SDD).
+these, because they're ours. That includes the `specs/` folder and the glossary —
+where a spec lives and what language it has to use.
 
 **[agent-skills](https://github.com/addyosmani/agent-skills) owns
 execution workflow — the HOW.** It's a pack of production-grade engineering
 workflows the AI follows step by step. We use a focused subset of it (not the
-whole pack) to cover the build/verify/ship middle that this template
+whole pack) to cover the plan/build/verify/ship spine that this template
 deliberately leaves thin. Those skills are installed into the AI agent, not
 stored in this repo — so we always get their latest version, and credit stays
 with their author.
@@ -24,14 +25,19 @@ with their author.
 
 | Phase  | Skill (from agent-skills)     | What it enforces                                    |
 | ------ | ----------------------------- | --------------------------------------------------- |
+| Plan   | `spec-driven-development`     | Spec before code: specify → plan → tasks → implement, with assumptions surfaced as questions |
 | Build  | `incremental-implementation`  | Thin vertical slices: implement → test → verify → commit, one at a time |
 | Build  | `test-driven-development`     | Red-green-refactor; tests as proof, not afterthought |
 | Verify | `debugging-and-error-recovery`| Disciplined triage when things break: reproduce → localize → fix → guard |
 | Ship   | `git-workflow-and-versioning` | Atomic commits and the branch-and-PR flow our branch protection requires |
 
 Everything else in agent-skills (its 24 skills total) is intentionally left out
-for now. Its ADR, definition-of-done, and spec skills overlap with what this
-template already provides; the rest can be added later if a project needs them.
+for now. Its ADR and definition-of-done skills overlap with what this template
+already provides; the rest can be added later if a project needs them.
+
+`spec-driven-development` and `specs/` are not a duplicate pair: the folder is
+where a spec lives and what shape it takes, the skill is the discipline of
+writing one before code and turning it into tasks. Neither supplies the other.
 
 ## Quick start for a new client
 
@@ -42,11 +48,12 @@ template already provides; the rest can be added later if a project needs them.
    - You can paste each to Claude and answer conversationally — it writes the structured
      version back.
 3. Tweak the reusable engineering files if needed (they usually stand as-is).
-4. Install the agent-skills we use for build/verify/ship (pulled from
+4. Install the agent-skills we use for plan/build/verify/ship (pulled from
    [agent-skills](https://github.com/addyosmani/agent-skills), not stored in this repo).
    Run once per machine or project:
 
    ```bash
+   npx skills add addyosmani/agent-skills --skill spec-driven-development
    npx skills add addyosmani/agent-skills --skill incremental-implementation
    npx skills add addyosmani/agent-skills --skill test-driven-development
    npx skills add addyosmani/agent-skills --skill debugging-and-error-recovery
@@ -55,11 +62,11 @@ template already provides; the rest can be added later if a project needs them.
 
    See "How this template works with agent-skills" for which skill covers which phase.
 
-5. Once the stack is chosen, ask Claude to generate the matching config: linter,
-   formatter, pre-commit hooks, and CI. (Deliberately left out until the stack exists —
-   those files can't be generic.)
-6. Do the GitHub settings that aren't files — protect `master`, require the append-only
-   check, create the `amend-decision` label, and mark this as a template repo (see below).
+5. **Work through `docs/setup.md`.** Everything left is a setting or a generated config
+   rather than a file that ships in the template — branch protection, the required check,
+   the `amend-decision` label, `CODEOWNERS`, and the linter/formatter/hooks/CI once the
+   stack is chosen. Steps 1–4 above fail loudly if you skip them; these fail silently,
+   and several of them are what make this repo's stated guardrails actually true.
 
 
 ## What's here
@@ -85,10 +92,13 @@ CLAUDE.md                  Entry point Claude reads first: router + the stop-lis
     review-checklist.md    Self-review + adversarial second-LLM review [reusable]
 specs/                     Feature specs, one folder per feature
   _template/spec.md        Copy this to start a new spec [reusable]
+tasks/                     Plan + task list for the feature in flight, written by
+                           spec-driven-development. Replaced each feature — not a record
 docs/
   decisions-log.md         Running record of mid-build choices
   open-questions.md        Blocked-on-a-human decisions (the translation queue)
-  todo.md                  Work queue + STANDING handoff checklist
+  checklists.md            Project-init list + STANDING handoff checklist
+  setup.md                 Day-one GitHub settings that turn the guardrails on
   handoff.md               How the client takes ownership (access, operability)
 scripts/
   check-decisions-immutable.sh  CI guard: decision records are append-only [reusable]
@@ -109,11 +119,11 @@ without disturbing the settled ones:
 
 - **Reusable** (teal): persona, operating rules, standards, review workflow — set once.
 - **Per client** (fill in): client context, glossary, constraints, stack.
-- **Living state**: decisions log, open questions, todo — updated every session.
+- **Living state**: decisions log, open questions — updated every session.
 - **Enforcement**: active today — gitignore, and CI enforcing that decision records are
   append-only. Pending a stack choice — linter, formatter, type-checker, pre-commit
   hooks, and test CI. `.ai/engineering/standards.md` describes rules in both groups, so
-  check `docs/todo.md` (project init) for which are actually wired.
+  check `docs/setup.md` for which are actually wired on this repo.
 
 ## Client handoff
 
@@ -125,24 +135,18 @@ That makes the risk **abandonment**, not exposure: a client who owns a repo they
 actually run. So handoff is about access and operability — README that works, env vars
 documented, accounts and secrets transferred, branch protection on. Reasoning in
 `docs/handoff.md`; the checklist that can't be skipped is standing at the bottom of
-`docs/todo.md`.
+`docs/checklists.md`.
 
 ## GitHub settings (not files — do these by hand)
 
-- **Protect `master`**: require a pull request to merge. Settings → Rules → Rulesets, or
-  Settings → Branches on a repo using older branch protection — see `docs/handoff.md`,
-  which explains how to tell which one your repo uses.
-- **Require the "Decision records are append-only" check** on that same rule. The workflow
-  is a file and ships automatically; marking it *required* is the manual part, and it only
-  appears in the picker after it has run once. Full sequence in `docs/handoff.md`.
-- **Create the `amend-decision` label** (`gh label create amend-decision --force`). It's
-  the sanctioned override for the append-only check. Without it, the first pull request
-  that legitimately edits decision-log prose fails with no way to clear it.
-- **Template repository**: Settings → check "Template repository" for the one-click
-  "Use this template" button on new projects.
+Branch protection, the required append-only check, the `amend-decision` label, `CODEOWNERS`,
+and the pre-commit hooks are settings rather than files. The repo cannot turn them on for
+itself, and nothing fails loudly if you skip them — it just quietly has no guardrails while
+several files claim it does.
 
-These are a summary. `docs/handoff.md` has the full ordered sequence, including the
-CODEOWNERS caveats and why step order matters for the status check.
+**The ordered sequence is `docs/setup.md`.** Deliberately the only copy: a summary here
+would be a second version to drift, and this is the one place in the repo where a stale
+instruction means a control that was never actually switched on.
 
 ## Getting this into GitHub
 

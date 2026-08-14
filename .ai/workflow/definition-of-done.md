@@ -9,8 +9,8 @@ declaring anything complete; the human reviewer checks it at the pull request.
 - [ ] Tests exist for the new behavior and they pass.
 - [ ] A bug fix includes a test that would have caught the bug.
 - [ ] Linter passes. *(If no linter is configured yet, this box is not "done by default"
-      — it's unavailable. Say so rather than ticking it; see project init in
-      `docs/todo.md`.)*
+      — it's unavailable. Say so rather than ticking it; `docs/setup.md` is where it
+      gets wired.)*
 - [ ] Formatter passes (code is formatted). Same caveat as above.
 - [ ] Type-checker passes, and every new suppression of it carries a reason — whether
       that's a silent cast or a suppression directive. See the Types rule in

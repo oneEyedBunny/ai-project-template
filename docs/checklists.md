@@ -1,33 +1,26 @@
-# Todo
+# Checklists
 
-Decided-but-not-yet-built work. This is the *execution* queue — no decisions pending
-here (those live in `open-questions.md`).
+Two lists that outlive any one feature: what to do once at the start of a project, and
+what has to be true before handing it to the client.
 
-> Recommendation: once the team is comfortable, move this to GitHub Issues. Issues are
-> shared, link to pull requests, and fit the branch-per-task workflow better than a file.
-> Keep this file only as a simple starting point, OR keep it just for the standing
-> handoff checklist below, which doesn't map cleanly to a feature issue.
+Neither is a work queue. Feature work goes in GitHub Issues, and the task breakdown for
+whatever is in flight is `tasks/todo.md`, written by the `spec-driven-development` skill
+and replaced each feature. These lists are here because they are durable and would be
+destroyed by that.
 
 ## Project init (do these once, when the stack is chosen)
 
+Files to edit. The settings and generated config that go with them are `docs/setup.md`;
+this list doesn't repeat it.
+
 - [ ] Declare the client/server seam in `.ai/engineering/architecture.md` — this one is
       not deferrable; see the note there
-- [ ] Point `.github/CODEOWNERS` at a reviewer with write access on this repo. Turn on
-      "require review from Code Owners" **only if someone other than the PR author can
-      approve** — on a one-person repo it makes every PR bypass-only, which is worse than
-      leaving it off. See `docs/handoff.md`
-- [ ] Fill in the enforcement table in `.ai/engineering/stack.md`, then generate the
-      config files from it
+- [ ] Fill in the enforcement table in `.ai/engineering/stack.md` — the config files are
+      generated from it, in `docs/setup.md`
 - [ ] Rewrite the `standards.md` examples in the project's language, or confirm the
       project is TypeScript and leave them
 - [ ] Decide whether `persona.md` / `standards.md` / `patterns.md` are this client's
       deliverable (record in `.ai/client/constraints.md` — see `docs/handoff.md`)
-
-## In progress
-
-## Up next
-
-## Backlog
 
 ---
 
@@ -48,9 +41,16 @@ every box before handing over. See `docs/handoff.md` for the reasoning.
 - [ ] Repo ownership transferred to the client's GitHub org (or their account)
 - [ ] Their team's access confirmed working — someone on their side has pushed or
       opened a PR successfully
-- [ ] Branch protection enabled on `master`
-- [ ] "Decision records are append-only" marked as a required status check on that
-      branch rule, and the `amend-decision` label created — see `docs/handoff.md`
+- [ ] Branch protection **still** enabled on `master` in their org — opened the settings
+      and looked, not assumed from having set it at project init
+- [ ] "Decision records are append-only" still required on that rule, and the
+      `amend-decision` label still exists in their repo
+- [ ] `.github/CODEOWNERS` points at someone with write access in *their* org, or the file
+      is deleted — our handle stops working the moment ownership moves, and every PR
+      touching `/.github/` or `/scripts/` blocks with an error that doesn't explain itself
+
+      These three are verifications, not a repeat of `docs/setup.md`. They read the same
+      and are not — see "What transferring ownership breaks" in `docs/handoff.md`.
 - [ ] Any third-party accounts we set up (hosting, DB, APIs, domains) are in their
       name or transferred, and billing points at them
 

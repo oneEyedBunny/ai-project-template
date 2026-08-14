@@ -10,9 +10,20 @@ specs/
     notes.md               Optional. Scratch, sketches, links.
 ```
 
-`spec.md` is the only required file. The build sequence (slices, tasks, commits) is
-owned by the `incremental-implementation` skill at build time, not written up front —
-a task list authored before the work starts is stale by the second slice.
+`spec.md` is the only required file. From there the `spec-driven-development` skill
+writes a technical plan and a task breakdown, sized so each task lands in one session.
+`incremental-implementation` executes them, slicing riskiest-first and re-cutting the
+list when an early slice proves it wrong.
+
+So the breakdown *is* written before the work — but it's a starting point, not a
+contract. Expect it to change by the second slice; that's the incremental skill doing its
+job, not the plan having failed.
+
+**The plan and task list live at `tasks/plan.md` and `tasks/todo.md`**, the skill's own
+convention, not in the feature folder. They're working state for whatever is in flight —
+the skill writes the same two paths every time, so starting the next feature replaces
+them. That's the right shape for a scratch plan and the wrong shape for a record, which
+is why they don't belong beside the spec.
 
 ## How the layers compose
 

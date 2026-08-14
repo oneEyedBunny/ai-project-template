@@ -6,8 +6,9 @@ How work moves from idea to shipped. Reusable across clients.
 
 1. **Spec first.** Non-trivial features start with a spec in `specs/` — copy
    `specs/_template/spec.md` into `specs/00N-feature-name/spec.md` and fill it in.
-   See `specs/README.md` for the convention. No spec for a real feature means we
-   don't yet understand it well enough to build it.
+   The `spec-driven-development` skill carries it from there into a technical plan and a
+   task breakdown, in `tasks/`. See `specs/README.md` for the convention. No spec for a
+   real feature means we don't yet understand it well enough to build it.
 2. **Tests as the target.** Turn the spec's acceptance criteria into tests, ideally
    before or alongside the implementation. "Make it work" becomes a concrete, checkable
    target instead of a vibe.
@@ -20,13 +21,10 @@ How work moves from idea to shipped. Reusable across clients.
 
 ## Definition of done
 
-A piece of work is done only when ALL of these are true. See
-`.ai/workflow/definition-of-done.md` for the full checklist. In short:
-- Tests exist and pass.
-- Linter, formatter, and type-checker pass.
-- No secrets, no real user data.
-- A human can explain what the code does.
-- Decisions and open questions are recorded.
+`.ai/workflow/definition-of-done.md`, in full and in one place. Work through it there
+rather than from memory — several boxes carry conditions that a summary loses, and the
+one this file used to carry had already lost the condition that an unconfigured linter
+makes that box *unavailable* rather than passing.
 
 ## When to bring in a second LLM (adversarial review)
 
@@ -69,8 +67,9 @@ Two conditions, both required:
 
 Worked examples from this repo: a date-based reminder to write the boundary contract fails
 (1). A check comparing stop-list item counts and per-item slugs fails (2) — the only real
-drift kept every item identity intact and changed one item's *scope*. The co-change check
-described in `docs/decisions-log.md` passes both, which is why it's the one that survived.
+drift kept every item identity intact and changed one item's *scope*. A co-change check —
+fail the pull request when one copy of a duplicated rule changes and the other doesn't —
+passes both, which is why that's the shape that survived.
 
 ## Nothing pushed straight to the default branch
 
@@ -78,4 +77,5 @@ The default branch on this repo is **`master`**. Branch from it and target pull 
 at it — there is no `main`.
 
 All work goes through a branch and a pull request. `master` is protected. This is a
-GitHub setting, not a file — see `docs/handoff.md` and the README for how to enable it.
+GitHub setting, not a file — `docs/setup.md` has how to enable it. On a repo where that
+step was skipped, this section describes an intention rather than a control.

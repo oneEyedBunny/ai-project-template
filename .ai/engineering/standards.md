@@ -25,8 +25,8 @@ again in CI, and that is not a matter of discipline — unformatted, untyped, or
 lint-failing code cannot be committed.
 
 > **Not wired yet on a fresh repo, and this file cannot tell you whether yours is.**
-> The hooks and configs are generated when the stack is chosen (`docs/todo.md`, project
-> init). Until that's done, nothing above is enforced by anything — the rules still bind,
+> The hooks and configs are generated when the stack is chosen — `docs/setup.md`.
+> Until that's done, nothing above is enforced by anything — the rules still bind,
 > but the only thing applying them is you. Check for the config files rather than assuming
 > this heading means a gate exists.
 
@@ -92,9 +92,9 @@ The language is named in this heading on purpose. Concrete examples teach better
 pseudocode, so these stay concrete — but if this project isn't TypeScript, they show the
 *rule*, not the syntax, and you should not pattern-match the code style from them.
 
-Rewriting them in the project's language is an init task (see `docs/todo.md`). It is also
-the init task most likely to get skipped, so until it's done, treat the heading as the
-warning it is.
+Rewriting them in the project's language is an init task (see `docs/checklists.md`). It
+is also the init task most likely to get skipped, so until it's done, treat the heading
+as the warning it is.
 
 **Naming and early return**
 
