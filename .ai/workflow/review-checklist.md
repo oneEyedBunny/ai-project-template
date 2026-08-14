@@ -9,8 +9,9 @@ adversarial review on high-risk code. Sharing one checklist keeps reviews consis
 - Are there tests, and do they pass?
 - Any error I'm swallowing? Any unvalidated external data?
 - Any name that doesn't match the glossary?
-- Does this add a dependency? If so, it's justified in the PR description and weighed
-  against the selection rubric in `.ai/engineering/stack.md`. (Upgrading an existing
+- Does this add a dependency? If so, it's weighed against the selection rubric in
+  `.ai/engineering/stack.md` and the result is written into that tool's entry there — a
+  PR description is where it gets reviewed, not where it lives. (Upgrading an existing
   one is a stop-list item — see `CLAUDE.md`.)
 - Anything I assumed that a human should confirm? (→ `docs/open-questions.md`)
 - Any part I couldn't fully explain in plain English? (If so, it's not ready.)
