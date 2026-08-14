@@ -21,13 +21,10 @@ How work moves from idea to shipped. Reusable across clients.
 
 ## Definition of done
 
-A piece of work is done only when ALL of these are true. See
-`.ai/workflow/definition-of-done.md` for the full checklist. In short:
-- Tests exist and pass.
-- Linter, formatter, and type-checker pass.
-- No secrets, no real user data.
-- A human can explain what the code does.
-- Decisions and open questions are recorded.
+`.ai/workflow/definition-of-done.md`, in full and in one place. Work through it there
+rather than from memory — several boxes carry conditions that a summary loses, and the
+one this file used to carry had already lost the condition that an unconfigured linter
+makes that box *unavailable* rather than passing.
 
 ## When to bring in a second LLM (adversarial review)
 

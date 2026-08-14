@@ -59,8 +59,8 @@ Pick one when the time comes, delete the others:
   ui never reach back into a feature; features don't import each other.
 - **Blended**: one of the above *plus* the seam in part 1, which outranks it.
 
-> **Status: NOT YET DECLARED — due at the first ADR that changes a module boundary, a
-> dependency direction, or a public interface, or at handoff, whichever comes first.**
+> **Status: NOT YET DECLARED — due at the first ADR that meets the criterion under
+> "Architecture Decision Records" below, or at handoff, whichever comes first.**
 >
 > This marker is load-bearing and stays until it stops being true. An absent section
 > reads as "there is no contract," and a bare placeholder reads as forgotten. This has to
@@ -73,9 +73,8 @@ agent reading `domain → application → infrastructure` will create those fold
 three-file app, and every file written afterward reinforces them. Premature structure is
 expensive to remove. Late structure is only late, and `standards.md` still binds meanwhile.
 
-**What forces it to actually get written.** The ADR criterion below fires when a decision
-changes a module boundary, a dependency direction, or a public interface — and that
-criterion cannot be applied by someone who doesn't know what the boundaries are. So the
+**What forces it to actually get written.** The ADR criterion below cannot be applied by
+someone who doesn't know what the boundaries are — it is a question *about* them. So the
 first ADR that trips it is the moment this section gets filled in. Writing the contract is
 part of that ADR, not a follow-up.
 

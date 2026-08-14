@@ -41,14 +41,14 @@ things are the way they are. We stop re-deciding.
 
 ## What counts as "significant"
 
-One test, and it is stated in `.ai/engineering/architecture.md` under "Architecture
-Decision Records": use an ADR when the decision changes a module boundary, a dependency
-direction, or a public interface. Everything else goes in `docs/decisions-log.md` —
-including most framework, data store, and hosting choices.
+The test is in `.ai/engineering/architecture.md`, under "Architecture Decision Records",
+and only there. Apply it from that file rather than from a copy here — a second wording
+of a routing rule is how two files end up disagreeing about where a decision goes, and
+whichever record you picked is append-only by then.
 
-That is narrower than "anything architectural," deliberately. The log is equally durable
-and equally append-only, so routing a decision there loses nothing. What gets lost when
-`adr/` fills up is that anyone still reads it.
+Why it is narrower than "anything architectural": `docs/decisions-log.md` is equally
+durable and equally append-only, so sending a decision there loses nothing. What gets
+lost as `adr/` fills up is that anyone still reads it.
 
 ---
 
