@@ -22,6 +22,15 @@
 > Things the client or you have ruled out. Recording these stops Claude from
 > suggesting or building them.
 
+## Reusable methodology files
+
+**`persona.md` / `standards.md` / `patterns.md` are:** (this client's deliverable | our
+own tooling that happens to live in their repo)
+
+Decide at the start of the engagement, not at handoff — everything in the repo ships
+either way, so the answer changes what we are willing to write in them. Reasoning under
+"What ships" in `docs/handoff.md`.
+
 <!-- EXAMPLE (delete when filling in):
 ## Compliance & legal
 **Personal data:** Customer names, emails, phone numbers. No payment card data — payments
