@@ -25,6 +25,10 @@ the skill writes the same two paths every time, so starting the next feature rep
 them. That's the right shape for a scratch plan and the wrong shape for a record, which
 is why they don't belong beside the spec.
 
+Those two paths are the skill's defaults, and the skill is installed rather than vendored
+here — so if it starts writing somewhere else, this paragraph goes stale silently. Check
+it against the skill when you update.
+
 ## How the layers compose
 
 - `specs/` — the **what** and the **why** for one feature.

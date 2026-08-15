@@ -60,8 +60,8 @@ These are absolute. If a task requires one of these, STOP and ask first.
 5. **Upgrade an existing dependency.** A version bump changes behavior in ways a diff
    does not show. Name the package and the target version; wait for approval.
    Adding a *new* dependency is not on this list — it is reviewed at the pull request
-   against the selection rubric in `.ai/engineering/stack.md`. Justify it in the PR
-   description.
+   against the selection rubric in `.ai/engineering/stack.md`, and the evaluation is
+   recorded in that tool's entry there, not only in the PR description.
 6. **Handle real client or personal data.** Never paste real user data into prompts,
    logs, tests, or fixtures. Use fake data.
 7. **Commit anything secret.** API keys, tokens, passwords, `.env` contents. If you
@@ -78,8 +78,9 @@ work, that is also a stop: flag it in `docs/open-questions.md` and ask.
 - If you can't explain in plain English what a block of code does, don't ship it.
 - Prefer boring, proven solutions over clever ones.
 - Never import server-only code into client code. That ships secrets in the bundle — a
-  security failure, not a tidiness one. The seam is declared in
-  `.ai/engineering/architecture.md`.
+  security failure, not a tidiness one. `.ai/engineering/architecture.md` is where the
+  seam gets declared, and on a repo where nobody has declared it yet, this rule is
+  yours to apply by reading — nothing is checking imports for you.
 
 ---
 
